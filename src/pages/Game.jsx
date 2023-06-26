@@ -359,34 +359,34 @@ const Game = () => {
             {bg === 'front' &&
                 <>
                     <div className='w-1/2 h-1/4 flex align-middle items-center justify-center pb-4'>
-                        <h2 className='text-center font-bold text-2xl text-amber-950'>{template(difficulty)}</h2>
+                        <h2 className='text-center font-bold text-2xl text-black'>{template(difficulty)}</h2>
                     </div>
                     <div className='w-[69%] h-[58.5%] grid-flow-row mt-4'>
                         <div className='w-full h-1/4 py-3 px-3 flex flex-row justify-end items-center align-middle '>
                             <div className='w-1/3 h-full flex flex-col justify-center items-center mt-1'>
-                                <p className='font-bold m-0 text-base italic mt-3 leading-3 z-10 text-amber-950'>{uncomingZ[3].label}</p>
-                                <p className='font-bold m-0 text-xl text-amber-950'><span className='text-3xl'>{uncomingZ[3].totalZombies ? "x"+uncomingZ[3].totalZombies : ""}</span></p>
+                                <p className='font-bold m-0 text-base italic mt-3 leading-3 z-10 text-black'>{uncomingZ[3].label}</p>
+                                <p className='font-bold m-0 text-xl text-black'><span className='text-3xl'>{uncomingZ[3].totalZombies ? "x"+uncomingZ[3].totalZombies : ""}</span></p>
                             </div>
                             <img src={ZImg(uncomingZ[3].zombi, uncomingZ[3].all)}className='h-18 w-10 mt-5 z-0 '/>
                         </div>
                         <div className='w-full h-1/4 py-3 px-3 flex flex-row justify-end items-center align-middle mt-1'>
                             <div className='w-1/3 h-full flex flex-col justify-center items-center'>
-                                <p className='font-bold m-0 text-base italic mt-3 leading-3 z-10 text-amber-950'>{uncomingZ[2].label}</p>
-                                <p className='font-bold m-0 text-xl text-amber-950'><span className='text-3xl'>{uncomingZ[2].totalZombies ? "x"+uncomingZ[2].totalZombies :""}</span></p>
+                                <p className='font-bold m-0 text-base italic mt-3 leading-3 z-10 text-black'>{uncomingZ[2].label}</p>
+                                <p className='font-bold m-0 text-xl text-black'><span className='text-3xl'>{uncomingZ[2].totalZombies ? "x"+uncomingZ[2].totalZombies :""}</span></p>
                             </div>
                             <img src={ZImg(uncomingZ[2].zombi, uncomingZ[2].all)} className='h-18 w-10 mt-5 z-0 '/>
                         </div>
                         <div className='w-full h-1/4 py-3 px-3 flex flex-row justify-end items-center align-middle mt-1'>
                             <div className='w-1/3 h-full flex flex-col justify-center items-center'>
-                                <p className='font-bold m-0 text-base italic mt-3 leading-3 z-10 text-amber-950'>{uncomingZ[1].label}</p>
-                                <p className='font-bold m-0 text-xl text-amber-950'><span className='text-3xl'>{uncomingZ[1].totalZombies ? "x"+uncomingZ[1].totalZombies : ""}</span></p>
+                                <p className='font-bold m-0 text-base italic mt-3 leading-3 z-10 text-black'>{uncomingZ[1].label}</p>
+                                <p className='font-bold m-0 text-xl text-black'><span className='text-3xl'>{uncomingZ[1].totalZombies ? "x"+uncomingZ[1].totalZombies : ""}</span></p>
                             </div>
                             <img src={ZImg(uncomingZ[1].zombi, uncomingZ[1].all)}className='h-18 w-10 mt-5 z-0'/>
                         </div>
                         <div className='w-full h-1/4 py-3 px-3 flex flex-row justify-end items-center align-middle mt-1'>
                             <div className='w-1/3 h-full flex flex-col justify-center items-center'>
-                                <p className='font-bold m-0 text-base italic mt-3 leading-3 z-10 text-amber-950'>{uncomingZ[0].label}</p>
-                                <p className='font-bold m-0 text-xl text-amber-950'><span className='text-3xl'>{uncomingZ[0].totalZombies ? "x"+uncomingZ[0].totalZombies : ""}</span></p>
+                                <p className='font-bold m-0 text-base italic mt-3 leading-3 z-10 text-black'>{uncomingZ[0].label}</p>
+                                <p className='font-bold m-0 text-xl text-black'><span className='text-3xl'>{uncomingZ[0].totalZombies ? "x"+uncomingZ[0].totalZombies : ""}</span></p>
                             </div>
                             <img src={ZImg(uncomingZ[0].zombi, uncomingZ[0].all)} className='h-18 w-10 mt-5 z-0'/>
                         </div>
