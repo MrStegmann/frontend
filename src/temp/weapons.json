@@ -1,0 +1,38 @@
+[
+    {
+        "id": 0,
+        "code": "WE",
+        "name": "Bastón mágico",
+        "description": "Aumenta el daño de todos los hechizos en +1. | Daño físico: 3",
+        "cost": 1,
+        "deckLimit": 2,
+        "rarety": "Pobre",
+        "level": 0,
+        "resource": "mana",
+        "type": "improve"
+    },
+    {
+        "id": 1,
+        "code": "WE",
+        "name": "Espada simple",
+        "description": "Aumenta tu daño a +4",
+        "cost": 1,
+        "deckLimit": 2,
+        "rarety": "Pobre",
+        "level": 0,
+        "resource": "rage",
+        "type": "improve"
+    },
+    {
+        "id": 2,
+        "code": "WE",
+        "name": "Hacha simple",
+        "description": "Aumenta tu daño a +2. Los ataques realizados tienen el rasgo de Perforante.",
+        "cost": 2,
+        "deckLimit": 2,
+        "rarety": "Pobre",
+        "level": 0,
+        "resource": "rage",
+        "type": "improve"
+    }
+]

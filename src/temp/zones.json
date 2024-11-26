@@ -1,0 +1,66 @@
+[
+    {
+      "id": 0,
+      "name": "Caravana de mercaderes",
+      "description": "Un mercader aparece ante vosotros con mercancía. Escoge una carta al azar de la pila de Armas, Armaduras, Objetos y Aliados. Estas son las cartas que vende el mercader. El coste de oro de cada carta depende de su coste en recursos. Sólo se puede comprar 1 carta. Las demás son desechadas.",
+      "class": "Rutas",
+      "type": "Humanoide",
+      "card": "zone"
+    },
+    {
+      "id": 1,
+      "name": "Sanatorio",
+      "description": "Agota a tu personaje para recuperar toda tu salud o bien agota un aliado para que recupere toda su salud.",
+      "class": "Urbano",
+      "type": "Edificio",
+      "card": "zone"
+    },
+    {
+      "id": 2,
+      "name": "Almacén",
+      "description": "Busca en tu pila de descartes una carta de tipo Objeto y reapilala.",
+      "class": "Urbano",
+      "type": "Edificio",
+      "card": "zone"
+    },
+    {
+      "id": 3,
+      "name": "Taberna",
+      "description": "Busca un aliado en tu mazo o tu pila de descartes y ponlo a juego pagando el coste de esa carta. Baraja tu mazo",
+      "class": "Urbano",
+      "type": "Edificio",
+      "card": "zone"
+    },
+    {
+      "id": 4,
+      "name": "Bosque con ciervos",
+      "description": "Puedes agotar a tu personaje o a un aliado que controles para recuperar una carta de la pila de descartes. A continuación, ponla en tu mano.",
+      "class": "Salvaje",
+      "type": "Caza",
+      "card": "zone"
+    },
+    {
+      "id": 5,
+      "name": "Aldea",
+      "description": "Elige una opción de entre las siguientes: -Roba un aliado. -Agota tu personaje y cúrate 4 puntos. -Comerciar.",
+      "class": "Urbano",
+      "type": "Aldea",
+      "card": "zone"
+    },
+    {
+      "id": 6,
+      "name": "Capilla",
+      "description": "Elige una de estas opcoines: - Puedes jugar una carta con el coste reducido en 1.  - Roba 1 carta. -Recupera una carta del mazo de descartes y añadela el primero en tu mazo.",
+      "class": "Urbano",
+      "type": "Edificio",
+      "card": "zone"
+    },
+    {
+      "id": 7,
+      "name": "Lugar sagrado",
+      "description": "Mientras estés en esta zona, el coste de una de tus cartas de la mano, cuesta -1 de recurso.",
+      "class": "Salvaje",
+      "type": "Exterior",
+      "card": "zone"
+    }
+  ]

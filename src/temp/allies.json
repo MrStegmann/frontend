@@ -1,0 +1,15 @@
+[
+    {
+        "id": 0,
+        "code": "AL",
+        "name": "Guerrero nórdico",
+        "descripcion": "Acción: Cuando entra en juego, inflige daño 4 de daño perforante a un Esbirro. A continuación, adopta una pose de combate: -Guardian: Cuando el jugador vaya a recibir daño, en lugar de eso, descarta este aliado. -Berserker: Después de atacar, puedes recibir la mitad del daño realizado y preparar este aliado.",
+        "cost": 3,
+        "deckLimit": 3,
+        "rarety": "Común",
+        "level": 0,
+        "resource": "rage",
+        "type": "ally",
+        "card": "ally"
+    }
+]

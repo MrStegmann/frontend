@@ -1,0 +1,19 @@
+<svg width="300" height="450" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo con degradado -->
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00416A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E4E5E6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="300" height="450" fill="url(#grad1)" />
+
+  <!-- Marco decorativo -->
+  <rect x="10" y="10" width="280" height="430" fill="none" stroke="#FFFFFF" stroke-width="5" />
+
+  <!-- Simbolo o logotipo central -->
+  <circle cx="150" cy="225" r="80" fill="none" stroke="#FFFFFF" stroke-width="10" />
+  <text x="150" y="230" font-family="Arial" font-size="40" fill="#FFFFFF" text-anchor="middle" alignment-baseline="middle">
+    A
+  </text>
+</svg>

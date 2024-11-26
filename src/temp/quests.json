@@ -1,0 +1,47 @@
+[
+    {
+      "id": 0,
+      "name": "Siguiendo el rastro",
+      "description": "El líder de los bandidos ha dejado un rastro tras de sí demasiado fácil de seguir. Es muy probable que sea una trampa, pero también es una pista de llegar hasta él.",
+      "objective": "Cuando esta carta entra en juego, pon en juego el obstáculo-trampa  \"Trampa explosiva\" al jugador inicial. Si el jugador paga el coste de esa carta, habrá completado esta misión.",
+      "reward": "El jugador inicial recibe una carta objeto-trampa \"Trampa explosiva",
+      "encounterDeck": "outlaw",
+      "card": "quest"
+    },
+    {
+      "id": 1,
+      "name": "Interrogar a los secuaces",
+      "description": "Los secuaces del líder bandido podrían tener información importante sobre el paradero de su líder y justo enfrente a un grupo de bandidos que parecen intentar robar a alguien.",
+      "objective": "Cuando esta carta entra en juego, pon un esbirro Bandido del mazo de Encuentros del Villano enfrentado a cada jugador. Si los jugadores derrotan a todos los esbirros, habrán completado esta misión.",
+      "reward": "El jugador inicial podrá poner en juego un aliado.",
+      "encounterDeck": "outlaw",
+      "card": "quest"
+    },
+    {
+      "id": 2,
+      "name": "Pistas falsas",
+      "description": "El líder de los bandidos está tratando de despistar dejando varios rastros que siguen caminos diferentes. Hay que elegir correctamente cuál seguir para evitar retrasos.",
+      "objective": "Cuando esta carta entra en juego, coge las siguientes tres Cartas de Evento, sin verlas, y elige una. Descarta las demás. A continuación, haz lo siguiente en función del tipo de carta: -Monstruo: Busca un esbirro bandido del mazo de encuentros del villano y ponlo enfrentado al jugador, junto al monstruo. -Obstáculo: El jugador inicial se enfrenta a ese obstáculo en solitario. -Zonas: Los jugadores no se podrán beneficiar de esta carta. -Misión: Completa esta misión y la siguiente sin recibir las recompensas de cada misión.",
+      "reward": "El jugador inicial recupera todas las cartas del mazo de descartes. A continuación, baraja su mazo.",
+      "encounterDeck": "outlaw",
+      "card": "quest"
+    },
+    {
+      "id": 3,
+      "name": "La mano derecha",
+      "description": "Las pistas han conducido hasta el paradero de la mano derecha del Líder de los bandidos. Atraparlo podría dar una considerable ventaja... si es que a esas sabandijas les importan sus compañeros.",
+      "objective": "Cuando esta carta entra en juego, busca a la Mano Derecha en el mazo de Encuentros del Villano, enfrentalo al jugador inicial, dale Constitución. A continuación, cada jugador, incluido el inicial, se enfrentan a un esbirro bandido del mazo de Encuentros del villano. Cuando se derrote a la mano derecha y los bandidos, se completará esta misión.",
+      "reward": "Todos los jugadores reciben una mejora de su elección: - +1 al tamaño de la mano. - Recuperar toda la salud. - Restablecer el mazo.",
+      "encounterDeck": "outlaw",
+      "card": "quest"
+    },
+    {
+      "id": 4,
+      "name": "Un campamento vacío",
+      "description": "Un campamento abandonado con las acuas de la hoguera aún calientes. El líder ha estado ahí recientemente y sólo queda registrar el lugar.",
+      "objective": "Cuando esta carta entra en juego, los jugadores podrán descartar cartas para pagar estos recursos: -Ira, Energia y Maná. Si lo hacen completan esta misión.",
+      "reward": "Los jugadores reciben un Objeto \"Poción de salud",
+      "encounterDeck": "outlaw",
+      "card": "quest"
+    }
+  ]

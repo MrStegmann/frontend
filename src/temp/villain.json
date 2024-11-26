@@ -1,0 +1,27 @@
+[
+    {
+        "id": 0,
+        "name": "Líder bandido",
+        "level": "(x)+2",
+        "type": "villain",
+        "atq": "(level)+1",
+        "def": "(level)+3",
+        "health": "20+(5*(level))*(nPlayer)",
+        "cat": "elite",
+        "fPhase": {
+            "description": "Gana Represalia.",
+            "action" : "getRetaliation"
+        },
+        "sPhase": {
+            "description": "Su ataque suma +2",
+            "action": "upgradeAtq=2"
+        },
+        "tPhase": {},
+        "encounterDeck": "outlaw",
+        "imgSrc": "../../img/lider-bandido.jpg",
+        "deckSize": 27,
+        "monsters": 12,
+        "obstacles": 8,
+        "zones": 5
+    }
+]

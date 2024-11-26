@@ -1,0 +1,86 @@
+[
+    {
+        "id": 0,
+        "code": "OB",
+        "name": "Grimorio",
+        "description": "Cuando lances un hechizo e inflijas daño, roba una carta.",
+        "cost": 4,
+        "deckLimit": 3,
+        "rarety": "Pobre",
+        "level": 0,
+        "resource": "mana",
+        "type": "improve"
+    },
+    {
+        "id": 1,
+        "code": "OB",
+        "name": "Poción de maná",
+        "description": "Genera 1 recurso de maná",
+        "cost": 0,
+        "deckLimit": "-",
+        "rarety": "Pobre",
+        "level": 0,
+        "resource": "mana",
+        "type": "event"
+    },
+    {
+        "id": 2,
+        "code": "OB",
+        "name": "Poción de salud",
+        "description": "Recuperas 2 puntos de salud",
+        "cost": 0,
+        "deckLimit": "-",
+        "rarety": "Pobre",
+        "level": 0,
+        "resource": "focus",
+        "type": "event"
+    },
+    {
+        "id": 3,
+        "code": "OB",
+        "name": "Varita",
+        "description": "Acción: Inflije 1 de daño.",
+        "cost": 1,
+        "deckLimit": 4,
+        "rarety": "Pobre",
+        "level": 0,
+        "resource": "mana",
+        "type": "event"
+    },
+    {
+        "id": 4,
+        "code": "OB",
+        "name": "Anillo mágico",
+        "description": "Agota esta carta para recibir +1 de Maná. Descartala para recibir +2 de Maná.",
+        "cost": 3,
+        "deckLimit": 2,
+        "rarety": "Común",
+        "level": 0,
+        "resource": "mana",
+        "type": "improve"
+    },
+    {
+        "id": 5,
+        "code": "OB",
+        "name": "Amuleto protector",
+        "description": "El próximo daño que recibas es reducido en 1 sea cual sea su fuente. Descarta esta carta si el daño es mágico.",
+        "cost": 4,
+        "deckLimit": 2,
+        "rarety": "Común",
+        "level": 0,
+        "resource": "mana",
+        "type": "improve"
+    },
+    {
+        "id": 6,
+        "code": "OB",
+        "name": "Trampa explosiva",
+        "description": "Cuando esta carta entra en juego, el próximo esbirro que entre en juego enfrentado a ti, activa la trampa y recibe 10 de daño.",
+        "cost": 3,
+        "deckLimit": 3,
+        "rarety": "Común",
+        "level": 1,
+        "resource": "energy",
+        "type": "support"
+    }
+]

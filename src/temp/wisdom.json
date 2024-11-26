@@ -1,0 +1,54 @@
+[
+    {
+        "id": 0,
+        "code": "W",
+        "name": "Saber hacer",
+        "description": "Cuando se usa esta carga para pagar una carta de Sabiduría, vale el doble.",
+        "cost": 0,
+        "deckLimit": 3,
+        "rarety": "Pobre",
+        "level": 0,
+        "resource": "focus",
+        "stat": "wisdom",
+        "type": "resource"
+    },
+    {
+        "id": 1,
+        "code": "W",
+        "name": "Recursos de emergencia",
+        "description": "Recupera 2 carta de tu pila de descartes que tengan el mismo tipo de recurso que has gastado para pagar esta carta.",
+        "cost": 2,
+        "deckLimit": 3,
+        "rarety": "Común",
+        "level": 0,
+        "resource": "focus",
+        "stat": "survival",
+        "type": "event"
+    },
+    {
+        "id": 2,
+        "code": "W",
+        "name": "Encontrar una alternativa",
+        "description": "Te permite superar obstáculos ambientales.",
+        "cost": 2,
+        "deckLimit": 3,
+        "rarety": "Común",
+        "level": 0,
+        "resource": "focus",
+        "stat": "perception",
+        "type": "event"
+    },
+    {
+        "id": 3,
+        "code": "W",
+        "name": "Otear el Horizonte",
+        "description": "Descarta esta carta para descubrir qué hay al final de un camino.",
+        "cost": 1,
+        "deckLimit": 3,
+        "rarety": "Común",
+        "level": 0,
+        "resource": "focus",
+        "stat": "perception",
+        "type": "event"
+    }
+]

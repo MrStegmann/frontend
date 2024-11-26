@@ -1,0 +1,46 @@
+[
+  {
+    "id": 0,
+    "code": "RE",
+    "name": "Ira",
+    "description": "Otorga 2 de Ira",
+    "cost": 0,
+    "deckLimit": 1,
+    "card": "resource",
+    "value": 2,
+    "resource": "rage"
+  },
+  {
+    "id": 1,
+    "code": "RE",
+    "name": "Energia",
+    "description": "Otorga 2 de energía",
+    "cost": 0,
+    "deckLimit": 1,
+    "card": "resource",
+    "value": 2,
+    "resource": "energy"
+  },
+  {
+    "id": 2,
+    "code": "RE",
+    "name": "Maná",
+    "description": "Otorga 2 de Maná",
+    "cost": 0,
+    "deckLimit": 1,
+    "card": "resource",
+    "value": 2,
+    "resource": "mana"
+  },
+  {
+    "id": 3,
+    "code": "RE",
+    "name": "Enfoque",
+    "description": "Otorga 2 de Enfoque",
+    "cost": 0,
+    "deckLimit": 1,
+    "card": "resource",
+    "value": 2,
+    "resource": "focus"
+  }
+]

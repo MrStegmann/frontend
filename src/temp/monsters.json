@@ -1,0 +1,123 @@
+[
+    {
+      "id": 0,
+      "name": "Bandido",
+      "description": "Acción: Embosca al jugador infligiendo 1 de daño. Si has usado \"Otear el Horizonte\" ignora esta acción.",
+      "level": "(level)+1",
+      "type": "Humanoide",
+      "atq": "4+(level)",
+      "def": "2+(level)",
+      "health": 20,
+      "card": "monster"
+    },
+    {
+      "id": 1,
+      "name": "Lobo",
+      "description": "Acción: Cuando hay más de un lobo enfrentado a un mismo jugador, cada lobo gana+1 de ataque por cada lobo enfrentado a ese jugador.",
+      "level": "(level)+1",
+      "type": "Bestia",
+      "atq": "3+(level)",
+      "def": "2+(level)",
+      "health": 20,
+      "card": "monster"
+    },
+    {
+      "id": 2,
+      "name": "Oso",
+      "description": "Los ataques ignoran la defensa.",
+      "level": "(level)+1",
+      "type": "Bestia",
+      "atq": "5+(level)",
+      "def": "5+(level)",
+      "health": 35,
+      "card": "monster"
+    },
+    {
+      "id": 3,
+      "name": "Jabalí",
+      "description": "Ataque veloz",
+      "level": "(level)+1",
+      "type": "Bestia",
+      "atq": "4+(level)",
+      "def": "1+(level)",
+      "health": 20,
+      "card": "monster"
+    },
+    {
+      "id": 4,
+      "name": "Puma",
+      "description": "Cuando no ha sido Oteado, ataca al jugador inicial.",
+      "level": "(level)+1",
+      "type": "Bestia",
+      "atq": "5+(level)",
+      "def": "1+(level)",
+      "health": 20,
+      "card": "monster"
+    },
+    {
+      "id": 5,
+      "name": "Sombra",
+      "description": "Cuando Sombra entra en juego, no podrá perder vida a menos que uses hechizos contra él.",
+      "level": "(level)+1",
+      "type": "Engendro",
+      "atq": "(level)",
+      "def": "(level)",
+      "health": 20,
+      "card": "monster"
+    },
+    {
+      "id": 6,
+      "name": "Ladrón",
+      "description": "Cuando este monstruo entra en juego, el jugador inicial descarta la carta de mayor coste de su mano.",
+      "level": "(level)+1",
+      "type": "Humanoide",
+      "atq": "2+(level)",
+      "def": "2+(level)",
+      "health": 20,
+      "card": "monster"
+    },
+    {
+      "id": 7,
+      "name": "Osárbol rabioso",
+      "description": "Los ataques ignoran la defensa.",
+      "level": "(level)+1",
+      "type": "Constructo",
+      "atq": "5+(level)",
+      "def": "2+(level)",
+      "health": 35,
+      "card": "monster"
+    },
+    {
+      "id": 8,
+      "name": "Pumárbol rabioso",
+      "description": "Cuando no ha sido Oteado, ataca al jugador inicial.",
+      "level": "(level)+1",
+      "type": "Constructo",
+      "atq": "2+(level)",
+      "def": "3+(level)",
+      "health": 20,
+      "card": "monster"
+    },
+    {
+      "id": 9,
+      "name": "Mercenario",
+      "description": "Acción: Cada vez que ataque, roba una carta de tu mazo y descartalo. A continuación, según el recurso de la carta descartada, haz lo siguiente: - Ira: Recibes+2 de daño. -Energia: Pon en tu mano una carta Arma que esté en juego. -Maná: Descarta un apoyo en juego. -Enfoque: Tu personaje queda agotado el siguiente turno. -Universal: Todo lo anterior.",
+      "level": "(level)+1",
+      "type": "Humanoide",
+      "atq": "4+(level)",
+      "def": "3+(level)",
+      "health": 20,
+      "card": "monster"
+    },
+    {
+      "id": 10,
+      "name": "Lobárbol rabioso",
+      "description": "Acción: Cuando hay más de un lobo enfrentado a un mismo jugador, cada lobo gana+1 de ataque por cada lobo enfrentado a ese jugador.",
+      "level": "(level)+1",
+      "type": "Constructo",
+      "atq": "2+(level)",
+      "def": "3+(level)",
+      "health": 20,
+      "card": "monster"
+    }
+  ]

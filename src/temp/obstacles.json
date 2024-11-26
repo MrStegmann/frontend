@@ -1,0 +1,167 @@
+[
+    {
+      "id": 0,
+      "name": "Río ancho",
+      "description": "Un río se interpone en tu camino impidiento el paso. Cruzar el río: Debes pagar los recursos de Energía (1) e Ira (1) para cruzar el río ó agotar a tu personaje. Si no paga: Pierdes tu mano.",
+      "class": "environment",
+      "type": "Agua",
+      "card": "obstacle",
+      "cost": {
+        "payment1": {
+          "energy": 1,
+          "rage": 1
+        },
+        "payment2": {
+          "deplete": true
+        }
+      }
+    },
+    {
+      "id": 1,
+      "name": "Incendio",
+      "description": "Un incendio descontrolado impide el paso. Apagar el fuego: Gasta recursos de Maná, Energia y Enfoque y agota a tu personaje. Si no paga: El jugador sufre 8 puntos de daño no mitigables.",
+      "class": "environment",
+      "type": "Fuego",
+      "card": "obstacle",
+      "cost": {
+        "payment1": {
+          "mana": 1,
+          "focus": 1,
+          "energy": 1,
+          "deplete": true
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "Humo",
+      "description": "El lugar está completamente envuelto por un humo denso que no permite ver nada. Los jugadores no podrán realizar acciones de ataque con sus personajes. Disipar el humo: Gasta recursos de Energía (3) ó Enfoque (3).",
+      "class": "environment",
+      "type": "Niebla",
+      "card": "obstacle",
+      "cost": {
+        "payment1": {
+          "focus": 3
+        },
+        "payment2": {
+          "energy": 3
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "Trampa explosiva",
+      "description": "Pasas por un lugar dónde hay una trampa explosiva bien oculta listo para explotar. Desactivar: Gasta recursos de energía (2) y agota tu personaje. Si no paga: Sufres 8 de daño y quedas derribado.",
+      "class": "trap",
+      "type": "Esplosiva",
+      "card": "obstacle",
+      "cost": {
+        "payment1": {
+          "energy": 2
+        },
+        "payment2": {
+          "deplete": true
+        }
+      },
+      "effect": {
+        "stun": true,
+        "damage": 8
+      }
+    },
+    {
+      "id": 4,
+      "name": "Dardos",
+      "description": "El lugar por el que caminas parece peligroso y hay oberturas en las paredes que parecen formar parte de un dispositivo de trampas con dardos. Desactivar: Gasta recursos de energía (2) y agota tu personaje. Si no paga: Sufre 6 de daño.",
+      "class": "trap",
+      "type": "Físico",
+      "card": "obstacle",
+      "cost": {
+        "payment1": {
+          "energy": 2
+        },
+        "payment2": {
+          "deplete": true
+        }
+      },
+      "effect": {
+        "damage": 6
+      }
+    },
+    {
+      "id": 5,
+      "name": "Foso",
+      "description": "El lugar está repleto de fosas escavadas por algún bandido desalmado. Desactivar: Gasta recursos de energía (2) y agota tu personaje. Si no paga: Sufre 2 de daño, quedas aturdido.",
+      "class": "trap",
+      "type": "Limitante",
+      "card": "obstacle",
+      "cost": {
+        "payment1": {
+          "energy": 2
+        },
+        "payment2": {
+          "deplete": true
+        }
+      },
+      "effect": {
+        "stun": true,
+        "damage": 2
+      }
+    },
+    {
+      "id": 6,
+      "name": "Dos caminos",
+      "description": "Cuando se muestra esta carta, el jugador deberá coger las dos siguientes cartas del mazo de Eventos sin mirarlas y elegir cuál cogerá. La otra será descartada. A continuación, la carta elegida se activa.",
+      "class": "way",
+      "type": "Camino",
+      "card": "obstacle",
+      "cost": {
+        "cards": 2
+      }
+    },
+    {
+      "id": 7,
+      "name": "Tres caminos",
+      "description": "Cuando se muestra esta carta, el jugador deberá coger las tres siguientes cartas del mazo de Eventos sin mirarlas y elegir cuál cogerá. Las demás serán descartadas. A continuación, la carta elegida se activa.",
+      "class": "way",
+      "type": "Camino",
+      "card": "obstacle",
+      "cost": {
+        "cards": 3
+      }
+    },
+    {
+      "id": 8,
+      "name": "Cuatro caminos",
+      "description": "Cuando se muestra esta carta, el jugador deberá coger las cruatro siguientes cartas del mazo de Eventos sin mirarlas y elegir cuál cogerá. Las demás serán descartadas. A continuación, la carta elegida se activa.",
+      "class": "way",
+      "type": "Camino",
+      "card": "obstacle",
+      "cost": {
+        "cards": 4
+      }
+    },
+    {
+      "id": 9,
+      "name": "Cinco caminos",
+      "description": "Cuando se muestra esta carta, el jugador deberá coger las cinco siguientes cartas del mazo de Eventos sin mirarlas y elegir cuál cogerá. Las demás serán descartadas. A continuación, la carta elegida se activa.",
+      "class": "way",
+      "type": "Camino",
+      "card": "obstacle",
+      "cost": {
+        "cards": 5
+      }
+    },
+    {
+      "id": 10,
+      "name": "Ruta montañosa",
+      "description": "Una ruta de montaña escarpada y peligrosa, de difícil acceso. Para cruzar: Gasta Energia (2). Si no paga: Agota a tu personaje para el siguiente turno.",
+      "class": "environment",
+      "type": "Camino",
+      "card": "obstacle",
+      "cost": {
+        "payment1": {
+          "energy": 2
+        }
+      }
+    }
+  ]

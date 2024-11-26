@@ -1,0 +1,88 @@
+{
+  "human": [
+    {
+      "id": 0,
+      "code": "BA",
+      "name": "Adaptación",
+      "description": "Cuando uses esta carta para pagar un recurso, genera un segundo recurso del mismo tipo.",
+      "cost": 0,
+      "deckLimit": 3,
+      "rarity": "Común",
+      "level": 0,
+      "raze": "human",
+      "resource": "universal",
+      "type": "event",
+      "card": "basic"
+    },
+    {
+      "id": 1,
+      "code": "BA",
+      "name": "Persistencia",
+      "description": "Busca en tu mazo o en la pila de descartes una carta que use el recurso de Energia y ponla en tu mano. Baraja tu mano.",
+      "cost": 1,
+      "deckLimit": 3,
+      "rarity": "Común",
+      "level": 0,
+      "raze": "human",
+      "resource": "energy",
+      "type": "event",
+      "card": "basic"
+    },
+    {
+      "id": 2,
+      "code": "BA",
+      "name": "Labia diplomática",
+      "description": "Puedes descartar esta carta para buscar en tu mazo un Aliado de tipo Humanoide y ponerla en tu mano. Baraja tu mano",
+      "cost": 2,
+      "deckLimit": 3,
+      "rarity": "Común",
+      "level": 0,
+      "raze": "human",
+      "resource": "focus",
+      "type": "event",
+      "card": "basic"
+    },
+    {
+      "id": 3,
+      "code": "BA",
+      "name": "Ventaja",
+      "description": "Si estás Derribado, descarta esta carta para incorporarte, preparando a tu personaje. Tú próximo ataque gana +2 de daño, a continuación, descarta esta carta.",
+      "cost": 2,
+      "deckLimit": 3,
+      "rarity": "Comun",
+      "level": 0,
+      "raze": "human",
+      "resource": "rage",
+      "type": "improve",
+      "card": "basic"
+    },
+    {
+      "id": 4,
+      "code": "BA",
+      "name": "Racionar",
+      "description": "Si fueras a recibir daño, puedes descartar una cantidad de cartas Objetos - Comidas.Cada carta descartada reduce en 1 el daño, a continuación, descarta esta carta. Baraja tu mano.",
+      "cost": 4,
+      "deckLimit": 3,
+      "rarity": "Comun",
+      "level": 0,
+      "raze": "human",
+      "resource": "mana",
+      "type": "improve",
+      "card": "basic"
+    },
+    {
+      "id": 5,
+      "code": "BA",
+      "name": "Preparado",
+      "description": "Suma +1 al tamaño de tu mano",
+      "cost": 3,
+      "deckLimit": 3,
+      "rarity": "Común",
+      "level": 0,
+      "raze": "human",
+      "resource": "focus",
+      "type": "improve",
+      "card": "basic"
+    }
+  ]
+}

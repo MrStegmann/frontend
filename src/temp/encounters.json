@@ -1,0 +1,92 @@
+[
+  {
+    "id": 0,
+    "name": "Todo o nada",
+    "deck": "outlaw",
+    "description": "El líder bandido provoca un incendio derramando óleo por el lugar, prendiendolo.",
+    "action": "Cuando esta carta se muestre, busca y añade el obstáculo \"Incendio\" y añadele cinco fichas de Encuentro. Cada vez que pase el turno, retira una ficha de la carta. Cuando no haya fichas de Encuentro sobre el obstáculo, resuelve el efecto \"Si no paga\" de la carta para todos los jugadores. Para retirar esta carta del juego, debe realizarse \"Apagar el fuego\" de la carta.",
+    "max": 1,
+    "resource": "focus"
+  },
+  {
+    "id": 1,
+    "name": "¡Sorpresa!",
+    "deck": "outlaw",
+    "description": "El líder bandido ataca al jugador inicial",
+    "action": "El líder bandido te ataca. Si este ataque no es defendido, se robará una nueva carta de Encuentro para el jugador atacado.",
+    "max": 7,
+    "resource": "rage",
+    "type": "attack"
+  },
+  {
+    "id": 2,
+    "name": "Rodela de madera reforzada",
+    "deck": "outlaw",
+    "description": "El líder bandido se equipa con un escudo",
+    "action": "Escudo. Esta carta se vincula al villano, aumentando su defensa en 3.  Acción: Paga el coste de Energía (2) para retirarle este escudo y agota a tu personaje.",
+    "max": 2,
+    "resource": "energy"
+  },
+  {
+    "id": 3,
+    "name": "Armas de contrabando",
+    "deck": "outlaw",
+    "description": "El líder bandido recoge un arma de contrabando para enfrentarse a sus adversarios.",
+    "action": "Arma. Roba la siguiente carte de encuentro y el recurso de esa carta determinará el arma que el villano recibirá: Energia- Espada bastarda, +3 ataque; Ira-  Martillo de combate, +2 ataque y provoca Aturdido; Enfoque- Lanza, +3 ataque, perforante",
+    "max": 2,
+    "resource": "rage"
+  },
+  {
+    "id": 4,
+    "name": "Mano derecha",
+    "deck": "outlaw",
+    "description": "La mano derecha del Líder Bandido entra en juego para ayudar y defender a su jefe.",
+    "action": "Esbirro. Protector. La mano derecha del villano entra en juego enfrentado al jugador con una cota de mallas y un espadón vinculados. Ataque: 3; Defensa: 4; Vida: 20.",
+    "max": 1,
+    "resource": "focus",
+    "type": "minion",
+    "hp": 20,
+    "atq": 3,
+    "def": 4
+  },
+  {
+    "id": 5,
+    "name": "Bandido",
+    "deck": "outlaw",
+    "description": "La banda de bandidos acuden en ayuda de su líder.",
+    "action": "Esbirro. El bandido entra en juego enfrentado al jugador, con un peto de cuero y una espada simple vinculados. Ataque: 1; Defensa: 1; Vida: 10",
+    "max": 8,
+    "resource": "focus",
+    "type": "minion",
+    "hp": 10,
+    "atq": 1,
+    "def": 1
+  },
+  {
+    "id": 6,
+    "name": "Bomba de humo",
+    "deck": "outlaw",
+    "description": "El líder bandido lanza una bomba de humo, cegando a todos.",
+    "action": "Acción. Cuando esta carta entra en juego, coloca el obstáculo \"Humo\". Si al inicio de cada turno del Villano, el obstáculo \"Humo\" sigue en juego, descarta el mazo de Encuentro hasta que aparezca ¡Sorpresa! y ponla en juego contra el jugador que corresponda.",
+    "max": 1,
+    "resource": "energy"
+  },
+  {
+    "id": 7,
+    "name": "Trampero",
+    "deck": "outlaw",
+    "description": "El líder bandido ha preparado trampas por toda la zona.",
+    "action": "Cuando esta carta entre en juego, roba la siguiente carta para determinar qué trampa entra en juego y pon el obstáculo enfrentado al jugador: -Ira: Trampa explosiva; -Energia: Dardos; Enfoque: Foso.  Al final del turno, si el jugador ha realizado cualquier acción y no se ha retirado del juego el obstáculo, resuelve el efecto Si no paga de la carta.",
+    "max": 2,
+    "resource": "focus"
+  },
+  {
+    "id": 8,
+    "name": "Arma envenenada",
+    "deck": "outlaw",
+    "description": "El líder bandido aplica venenos sobre sus armas.",
+    "action": "Si el villano tiene un arma vinculada, cuando esta carta entra en juego, el villano gana el rasgo de Ponzoñoso, por lo que sus ataques provocan el estado \"Envenenado",
+    "max": 3,
+    "resource": "energy"
+  }
+]

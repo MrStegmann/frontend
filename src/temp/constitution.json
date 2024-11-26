@@ -1,0 +1,41 @@
+[
+    {
+        "id": 0,
+        "code": "C",
+        "name": "Saludable",
+        "description": "Aumentas tu vida máxima +5",
+        "cost": 2,
+        "deckLimit": 3,
+        "rarety": "Común",
+        "level": 0,
+        "resource": "energy",
+        "stat": "constitution",
+        "type": "improve"
+    },
+    {
+        "id": 1,
+        "code": "C",
+        "name": "Piel de hierro",
+        "description": "Cuando recibas daño, reduce ese daño a la mitad, después descarta esta carta.",
+        "cost": 2,
+        "deckLimit": 3,
+        "rarety": "Común",
+        "level": 0,
+        "resource": "rage",
+        "stat": "fortitude",
+        "type": "improve"
+    },
+    {
+        "id": 2,
+        "code": "C",
+        "name": "Duro de pelar",
+        "description": "Retira cualquier cantidad de estados alterados que tengas.",
+        "cost": 3,
+        "deckLimit": 3,
+        "rarety": "Común",
+        "level": 0,
+        "resource": "focus",
+        "stat": "fortitude",
+        "type": "event"
+    }
+]

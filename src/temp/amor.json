@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "code": "AR",
+        "name": "Toga de aprendiz",
+        "description": "El tamaño de tu mano aumenta en +1. Reducción mágica + 2",
+        "cost": 2,
+        "deckLimit": 4,
+        "rarety": "Pobre",
+        "level": 0,
+        "resource": "focus",
+        "type": "improve",
+        "card": "armor"
+
+    },
+    {
+        "id": 2,
+        "code": "AR",
+        "name": "Cota de malla",
+        "description": "Reducción física +4",
+        "cost": 2,
+        "deckLimit": 2,
+        "rarety": "Pobre",
+        "level": 0,
+        "resource": "rage",
+        "type": "improve",
+        "card": "armor"
+    },
+    {
+        "id": 3,
+        "code": "AR",
+        "name": "Yelmo nórdico",
+        "description": "Reducción física + 2",
+        "cost": 1,
+        "deckLimit": 2,
+        "rarety": "Pobre",
+        "level": 0,
+        "resource": "rage",
+        "type": "improve",
+        "card": "armor"
+    }
+]
