@@ -4,6 +4,9 @@ import defaultChars from "../temp/defaultChars.json";
 import ImproveCards from '../components/ImproveCards';
 import AllyCard from '../components/AllyCard';
 import Attacking from '../components/Attacking';
+import CharCard from '../components/CharCard';
+import EventCard from '../components/EventCard';
+import EquipSlots from '../components/EquipSlots';
 
 const TestPage = () => {
     const [ villain, setVillain ] = useState({
@@ -13,6 +16,7 @@ const TestPage = () => {
         initHp: 20,
         maxHP: 20,
         hp: 20,
+        damage: 0,
     
         initMaDef: 1,
         initPhDef: 1,
@@ -22,7 +26,7 @@ const TestPage = () => {
         initMaAt: 0,
         initPhAt: 1,
         mAt: 0,
-        pAt: 10,
+        pAt: 5,
 
         stunned: 0,
         knocked: 0,
@@ -31,11 +35,12 @@ const TestPage = () => {
 
     const [ player, setPlayer ] = useState({
         name: "Jugador",
-
+        type: "character",
         initMaxHp: 20,
         initHp: 20,
         maxHP: 20,
         hp: 20,
+        damage: 0,
     
         initMaDef: 0,
         initPhDef: 1,
@@ -80,6 +85,7 @@ const TestPage = () => {
                 discards: [],
                 stunned: 0,
                 knocked: 0,
+                damage: 0,
                 improves: [],
                 allies: [],
                 initMaAt: 0,
@@ -141,7 +147,7 @@ const TestPage = () => {
         const newImprove = [...a.improves, cardToPlay];
 
         let totalMaxHP = a.initMaxHp;
-        let totalHP = a.initHp;
+        let totalHP = a.initHp - a.damage;
 
         let totalPhAt = a.initPhAt;
         let totalMaAt = a.initMaAt;
@@ -160,6 +166,8 @@ const TestPage = () => {
                 totalHP += maxHP;
             };
         });
+
+        totalHP = totalHP > totalMaxHP ? totalMaxHP : totalHP;
 
         return { 
             ...a,
@@ -190,6 +198,22 @@ const TestPage = () => {
         };
     };
 
+    // Función para pagar cartas de Evento
+    const eventCards = (a, newHand, newDiscard) => {
+        newDiscard.push(cardToPlay);
+
+        const { hp } = cardToPlay;
+
+        const newHP = a.hp + hp;
+        
+        return { 
+            ...a,
+            hp: newHP,
+            hand: newHand,
+            discards: newDiscard
+        };
+    };
+
     // Función para jugadr una carta, pagando su coste y descartando las cartas seleccionadas para el pago
     const handlePlayCard = () => {
         if (cardsToPay.length === 0) return console.log('No has seleccionado ninguga carta para pagar el coste.');
@@ -204,7 +228,8 @@ const TestPage = () => {
             const newDiscard = [...a.discards, ...cardsToPay];
             if (cardToPlay.type === "improve") return improveCards(a, newHand, newDiscard);
             if (cardToPlay.type === "ally") return allyCards(a, newHand, newDiscard);
-            
+            if (cardToPlay.type === "event") return eventCards(a, newHand, newDiscard);
+
         });
 
         setCardToPlay(null);
@@ -214,6 +239,8 @@ const TestPage = () => {
 
     // Ataque
     const handleAttack = (a, d, aSetter, dSetter, isMagic = false) => {
+        if (a.exhausted) return console.log('No puedes atacar. Esta carta está agotada');
+
         let aAttack = isMagic ? a.mAt : a.pAt;
         let AtImproveTotal = 0;
 
@@ -241,10 +268,13 @@ const TestPage = () => {
 
         const total = aAttack - dDefense < 0 ? 0 : aAttack - dDefense;
 
+        const totalDamage = d.damage + total;
         const newHPvalue = d.hp - total;
 
-        console.log(`${a.name} ataca ${isMagic ? "mágicamente" : "fisicamente"} a ${d.name} y le causa ${total} de daño físico`)
-        dSetter({...d, hp: newHPvalue});
+        console.log(`${a.name} ataca ${isMagic ? "mágicamente" : "fisicamente"} a ${d.name} y le causa ${total} de daño físico`);
+
+        dSetter({...d, hp: newHPvalue, damage: totalDamage});
+        
 
         if (a.type && a.type === "ally") {
             const ally = {...a};
@@ -268,9 +298,12 @@ const TestPage = () => {
                 } else allies.splice(allyIndex, 1, ally);
                 return {...pr, allies, discards: newDiscards};
             });
+        } else {
+            aSetter(prev => { return { ...prev, exhausted: 1}});
+            
         };
 
-        setIsAttacking(false);
+        setCardToPlay(null);
     };
 
     // Seleccionar carta para jugar
@@ -280,20 +313,38 @@ const TestPage = () => {
                 let cannotUse = false;
                 let count = 0;
                 player.improves.forEach(card => {
+                    // Armas de una mano y escudo
                     if (cardToPlay.slot === 0) {
                         if (card.slot === 1) return cannotUse = true;
                         if (card.slot === 0) ++count;
                         if (count >= 2) return cannotUse = true;
                     };
+                    // Armas de dos manos
                     if (cardToPlay.slot === 1) {
                         if (card.slot === 0 || card.slot === 1) return cannotUse = true;
                     };
+                    // Armadura (cabeza, peto, grebas)
                     if (
                         cardToPlay.slot === 2 || 
                         cardToPlay.slot === 3 || 
                         cardToPlay.slot === 4
                     ) {
                         if (card.slot === cardToPlay.slot) return cannotUse = true;
+                    };
+                    // Collares
+                    if (cardToPlay.slot === 5) {
+                        if (card.slot === 5) ++count;
+                        if (count >= 3) return cannotUse = true;
+                    };
+                    // Anillos
+                    if (cardToPlay.slot === 6) {
+                        if (card.slot === 6) ++count;
+                        if (count >= 4) return cannotUse = true;
+                    };
+                    // Trinkets
+                    if (cardToPlay.slot === 7) {
+                        if (card.slot === 7) ++count;
+                        if (count >= 2) return cannotUse = true;
                     };
                 });
                 if (cannotUse) return console.log('No puedes jugar esta carta. Ya has alcanzado el máximo para este Slot.');
@@ -304,6 +355,15 @@ const TestPage = () => {
             if (player.allies.length === 3) return console.log("No puedes jugar más aliados.");
         };
         setAction(prev => prev + 1);
+    };
+
+    // Función para comprobar si la carta ALLY está en juego
+    const checkPlayedAly = (card) => {
+        if (!card) return false;
+        const allies = player.allies;
+        const found = allies.find( ally => ally._id === card._id);
+        if (found) return true;
+        return false;
     };
 
     return (
@@ -320,8 +380,8 @@ const TestPage = () => {
                     <p className='font-bold'>Stunned: {""}<span className='font-normal'>{villain.stunned}</span></p>
                     <p className='font-bold'>Knocked: {""}<span className='font-normal'>{villain.knocked}</span></p>
 
-                    <button type='button' className='px-5 py-2 border border-indigo-500 rounded-xl hover:bg-indigo-500 hover:text-white' onClick={() => handleAttack(villain, player, setPlayer)}>Atacar al Jugador físicamente</button>
-                    <button type='button' className='px-5 py-2 border border-indigo-500 rounded-xl hover:bg-indigo-500 hover:text-white' onClick={() => handleAttack(villain, player, setPlayer, true)}>Atacar al Jugador mágicamente</button>
+                    <button type='button' className='px-5 py-2 border border-indigo-500 rounded-xl hover:bg-indigo-500 hover:text-white' onClick={() => handleAttack(villain, player, setVillain, setPlayer, false)}>Atacar al Jugador físicamente</button>
+                    <button type='button' className='px-5 py-2 border border-indigo-500 rounded-xl hover:bg-indigo-500 hover:text-white' onClick={() => handleAttack(villain, player, setVillain, setPlayer, true)}>Atacar al Jugador mágicamente</button>
                 </div>
                 <div>
                     Cartas
@@ -331,42 +391,41 @@ const TestPage = () => {
 
             <div className='block border border-indigo-500 rounded-lg p-5'>
                 <div>
-                    <h2 className='font-bold text-xl mb-5'>{player.name}</h2>
-                    <p className='font-bold'>Health point: {""}<span className='font-normal'>{player.hp}/{player.maxHP}</span></p>
-                    <p className='font-bold'>Magic Defense: {""}<span className='font-normal'>{player.mDef}</span></p>
-                    <p className='font-bold'>Physical Defense: {""}<span className='font-normal'>{player.pDef}</span></p>
-                    <p className='font-bold'>Magic Attack: {""}<span className='font-normal'>{player.mAt}</span></p>
-                    <p className='font-bold'>Physical Attack: {""}<span className='font-normal'>{player.pAt}</span></p>
-                    <p className='font-bold'>Stunned: {""}<span className='font-normal'>{player.stunned}</span></p>
-                    <p className='font-bold'>Knocked: {""}<span className='font-normal'>{player.knocked}</span></p>
+                    <EquipSlots improves={player.improves}>
+                        <button type='button' disabled={player.exhausted} className={`px-2 py-1 h-48 w-36 border border-indigo-600 ${cardToPlay?.type === "character" ? "border-2" : ""} rounded-lg text-sm transition-transform duration-500 ${!player.exhausted ? "rotate-0" : "rotate-90"}`} onClick={() => setCardToPlay(prev => prev ? prev.type === "character" ? null : player : player)}>
+                            <CharCard char={player} />
+                        </button>
+                    </EquipSlots>
+                    
 
-                    <p className='font-bold'>Deck: {""}<span className='font-normal'>{player.deck.length}</span></p>
-
-                    <p className='font-bold'>Hand: {""}<span className='font-normal'>{player.hand.length}</span></p>
-
-                    <p className='font-bold'>Discards: {""}<span className='font-normal'>{player.discards.length}</span></p>
-
-                    {!isAttacking && <button type='button' className='px-5 py-2 border border-indigo-500 rounded-xl hover:bg-indigo-500 hover:text-white' onClick={() => setIsAttacking(true)}>Atacar</button>}
-
-                    {isAttacking && <Attacking onCancel={() => setIsAttacking(false)} handleAttack={handleAttack} player={player} setPlayer={setPlayer} villain={villain} setVillain={setVillain} />}
+                    {   (
+                            cardToPlay?.type === "character" || 
+                            (
+                                cardToPlay?.type === "ally" && checkPlayedAly(cardToPlay)
+                            )
+                        ) && 
+                        <Attacking onCancel={() => setCardToPlay(null)} handleAttack={handleAttack} cardToPlay={cardToPlay} setPlayer={setPlayer} villain={villain} setVillain={setVillain} />
+                    }
 
                 </div>
 
                 <div className='w-full flex'>
                     {player.allies.map((card) => 
-                        <div key={card._id} className='px-2 py-1 h-32 w-1/5 border border-indigo-600 rounded-lg text-sm'>
+                        <button key={card._id} disabled={card.exhausted} className={`px-2 py-1 h-48 w-36 border border-indigo-600 ${cardToPlay?._id === card._id ? "border-2" : ""} rounded-lg text-sm transition-transform duration-500 ${!card.exhausted ? "rotate-0" : "rotate-90"}`} onClick={() => setCardToPlay(prev => prev ? prev._id === card._id ? null : card : card)}>
                             <AllyCard card={card} />
-                        </div>
+                        </button>
                     )}
                 </div>
 
-                <div className='w-full flex'>
+                
+
+                {/* <div className='w-full flex'>
                     {player.improves.map((card) => 
                         <div key={card._id} className='px-2 py-1 h-32 w-1/5 border border-indigo-600 rounded-lg text-sm'>
                             <ImproveCards card={card} />
                         </div>
                     )}
-                </div>
+                </div> */}
 
 
                 <div className='w-full flex flex-col items-center my-2'>
@@ -374,7 +433,7 @@ const TestPage = () => {
                         <>
                             <p>Selecciona una carta que jugar</p>
 
-                            {cardToPlay && (
+                            {cardToPlay?.type !== "character" && cardToPlay && !checkPlayedAly(cardToPlay) && (
                                 <div className='w-full flex flex-row gap-5 justify-center'>
                                     <button className='px-4 py-1 border border-indigo-500 rounded-xl hover:bg-indigo-600 hover:text-gray-100 font-bold'  onClick={handleAccept}>Aceptar</button>
 
@@ -415,11 +474,12 @@ const TestPage = () => {
                             <button key={card._id} className={`px-2 py-1 h-32 w-1/5 border hover:border-2 border-indigo-600 rounded-lg text-sm transition-transform duration-200 ${cardToPlay?._id === card._id ? "-translate-y-5" : cardsToPay.findIndex(ctp => ctp._id === card._id) !== -1 ? "-translate-y-2" : "-translate-y-0"}`} onClick={() => handleSelect(card)}>
                                {card.type === "improve" && <ImproveCards card={card} />}
                                {card.type === "ally" && <AllyCard card={card} />}
+                               {card.type === "event" && <EventCard card={card} />}
                             </button>
                         ))}
                     </div>
 
-                    <input type='button' className='h-32 w-16 border border-indigo-600 rounded-lg bg-blue-100 hover:cursor-pointer' onClick={handleGetHand} />
+                    <input type='button' className={`h-32 w-16 border ${player.deck.length === 0 ? "bg-white border-gray-400" : "bg-blue-100 border-indigo-600"} border-indigo-600 rounded-lg bg-blue-100 hover:cursor-pointer`} onClick={handleGetHand} />
                 </div>
             </div>
 
