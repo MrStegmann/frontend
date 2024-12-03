@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import ImproveCards from './ImproveCards';
 
-const EquipSlots = ({improves, children}) => {
+const EquipSlots = ({improves}) => {
     const [ slot0, setSlot0 ] = useState([]);
     const [ slot1, setSlot1 ] = useState(null);
     const [ slot2, setSlot2 ] = useState(null);
@@ -55,133 +55,143 @@ const EquipSlots = ({improves, children}) => {
     }, [improves]);
 
     return (
-        <div className='w-full h-full flex my-2 gap-5'>
-            <div className='flex flex-col gap-2'>
+        <div className='w-full h-full flex flex-col my-2 gap-5'>
+
+            <div className='flex gap-2'>
+
+                {/** Mano 1 y 2 */}
                 { slot1 ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
+                    <div className='card-size border border-indigo-600 rounded-lg '>
                         <ImproveCards card={slot1} />
                     </div>
                     :
                     slot0[0] ? 
-                        <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
+                        <div className='card-size border border-indigo-600 rounded-lg '>
                             <ImproveCards card={slot0[0]} /> 
                         </div>
                         : 
-                        <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
+                        <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
                 }
-
-                {slot2 ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
-                        <ImproveCards card={slot2} />
-                    </div>
-                :
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
-                }
-
-                {slot3 ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
-                        <ImproveCards card={slot3} />
-                    </div>
-                :
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
-                }
-                {slot4 ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
-                        <ImproveCards card={slot4} />
-                    </div>
-                :
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
-                }
-
-                {slot6[0] ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
-                        <ImproveCards card={slot6[0]} />
-                    </div>
-                    : 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
-                }
-
-                {slot6[1] ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
-                        <ImproveCards card={slot6[1]} />
-                    </div>
-                    : 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
-                }
-
-                {slot6[2] ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
-                        <ImproveCards card={slot6[2]} />
-                    </div>
-                    : 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
-                }
-                
-            </div>
-
-            <div className='flex flex-col'>
-                {children}
-            </div>
-
-            <div className='flex flex-col gap-2'>
                 { slot1 ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-gray-400 rounded-lg text-sm' />
+                    <div className='card-size border border-gray-400 rounded-lg ' />
                     :
                     slot0[1] ? 
-                        <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
+                        <div className='card-size border border-indigo-600 rounded-lg '>
                             <ImproveCards card={slot0[1]} /> 
                         </div>
                         : 
-                        <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
+                        <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
                 }
+                {/** Fin Mano 1 y 2 */}
 
-                {slot5[0] ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
-                        <ImproveCards card={slot5[0]} /> 
+                {/** Armadura Cabeza, Pecho, Piernas */}
+                {slot2 ? 
+                    <div className='card-size border border-indigo-600 rounded-lg '>
+                        <ImproveCards card={slot2} />
                     </div>
-                    : 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
+                :
+                    <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
                 }
 
-                {slot5[1] ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
-                        <ImproveCards card={slot5[1]} /> 
+                {slot3 ? 
+                    <div className='card-size border border-indigo-600 rounded-lg '>
+                        <ImproveCards card={slot3} />
                     </div>
-                    :
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
+                :
+                    <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
                 }
-
-                {slot5[2] ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
-                        <ImproveCards card={slot5[2]} /> 
+                {slot4 ? 
+                    <div className='card-size border border-indigo-600 rounded-lg '>
+                        <ImproveCards card={slot4} />
                     </div>
-                    : 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
+                :
+                    <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
                 }
+                {/** Fin Armadura Cabeza, Pecho, Piernas */}
 
-                {slot6[2] ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
-                        <ImproveCards card={slot6[2]} /> 
-                    </div>
-                    : 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
-                }
 
+                {/** Trinkets 1 y 2 */}
                 {slot6[3] ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
+                    <div className='card-size border border-indigo-600 rounded-lg '>
                         <ImproveCards card={slot6[3]} /> 
                     </div>
                     : 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
+                    <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
                 }
 
                 {slot7[1] ? 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm'>
+                    <div className='card-size border border-indigo-600 rounded-lg '>
                         <ImproveCards card={slot7[1]} /> 
                     </div>
                     : 
-                    <div className='px-2 py-1 w-12 h-12 border border-indigo-600 rounded-lg text-sm bg-white' />
+                    <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
                 }
+                {/** Fin Trinkets 1 y 2 */}
+            </div>
+
+            
+
+            <div className='flex gap-2'>
+                {/** Necks 1, 2 y 3 */}
+                {slot5[0] ? 
+                    <div className='card-size border border-indigo-600 rounded-lg '>
+                        <ImproveCards card={slot5[0]} /> 
+                    </div>
+                    : 
+                    <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
+                }
+
+                {slot5[1] ? 
+                    <div className='card-size border border-indigo-600 rounded-lg '>
+                        <ImproveCards card={slot5[1]} /> 
+                    </div>
+                    :
+                    <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
+                }
+
+                {slot5[2] ? 
+                    <div className='card-size border border-indigo-600 rounded-lg '>
+                        <ImproveCards card={slot5[2]} /> 
+                    </div>
+                    : 
+                    <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
+                }
+                {/** Fin Necks 1, 2 y 3 */}
+
+                
+                {/** Anillos 1, 2, 3 y 4 */}
+                {slot6[0] ? 
+                    <div className='card-size border border-indigo-600 rounded-lg '>
+                        <ImproveCards card={slot6[0]} />
+                    </div>
+                    : 
+                    <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
+                }
+
+                {slot6[1] ? 
+                    <div className='card-size border border-indigo-600 rounded-lg '>
+                        <ImproveCards card={slot6[1]} />
+                    </div>
+                    : 
+                    <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
+                }
+
+                {slot6[2] ? 
+                    <div className='card-size border border-indigo-600 rounded-lg '>
+                        <ImproveCards card={slot6[2]} /> 
+                    </div>
+                    : 
+                    <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
+                }
+
+                {slot6[3] ? 
+                    <div className='card-size border border-indigo-600 rounded-lg '>
+                        <ImproveCards card={slot6[3]} /> 
+                    </div>
+                    : 
+                    <div className='card-size border border-indigo-600 rounded-lg  bg-white' />
+                }
+                {/** Fin Anillos 1, 2, 3 y 4 */}
             </div>
         </div>
     )

@@ -1,27 +1,15 @@
 [
     {
-        "id": 0,
-        "name": "Líder bandido",
-        "level": "(x)+2",
-        "type": "villain",
-        "atq": "(level)+1",
-        "def": "(level)+3",
-        "health": "20+(5*(level))*(nPlayer)",
-        "cat": "elite",
-        "fPhase": {
-            "description": "Gana Represalia.",
-            "action" : "getRetaliation"
-        },
-        "sPhase": {
-            "description": "Su ataque suma +2",
-            "action": "upgradeAtq=2"
-        },
-        "tPhase": {},
-        "encounterDeck": "outlaw",
-        "imgSrc": "../../img/lider-bandido.jpg",
-        "deckSize": 27,
-        "monsters": 12,
-        "obstacles": 8,
-        "zones": 5
+        "_id": "",
+        "name": "Líder bandido", "level": 1, "type": "villain",
+        "hp": 20, "maxHP": 20, "mDef": 1, "pDef": 3, "mAt": 0, "pAt": 3, "enrage": 1,
+        "deck": [
+            {"_id": "", "resource": 1, "value": 1, "name": "Evento de villano 1"},
+            {"_id": "", "resource": 2, "value": 1, "name": "Evento de villano 2"},
+            {"_id": "", "resource": 3, "value": 1, "name": "Evento de villano 3"},
+            {"_id": "", "resource": 4, "value": 1, "name": "Evento de villano 4"},
+            {"_id": "", "resource": 0, "value": 1, "name": "Evento de villano 5"}
+        ]
+
     }
 ]

@@ -3,15 +3,27 @@ export default {
   content: ["index.html", "./src/**/*.jsx"],
   theme: {
     extend: {
-      backgroundImage: {
-        'spawn-zombie-back': "url('./img/ZombicideSpawnBack.png')",
-        'spawn-zombie-front': "url('./img/ZombicideSpawnFront.png')",
-        'spawn-necromancer': "url('./img/necromancer.png')",
-        'spawn-double': "url('./img/double.png')",
-        'spawn-horde': "url('./img/horde.png')"
-      }
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.card-size': {
+          width: '6rem',
+          height: '9rem',
+          fontSize: ".6rem",
+          lineHeight: ".75rem"
+        },
+        '@screen lg': {
+          '.card-size': {
+            width: '14.375rem',
+            height: '20rem',
+            fontSize: "1.2rem",
+            lineHeight: "1rem"
+          },
+        },
+      });
+    },
+  ],
 }
 

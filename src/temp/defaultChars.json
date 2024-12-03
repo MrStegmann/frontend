@@ -1,5 +1,6 @@
 [
     {
+        "_id": "",
         "name": "Einar Olafrson", "class": "Bárbaro",  "level": 1, "atributes": 5, "raze": "Humano Nórdico",
         "type": "character",
         "maxHand": 4, "hp": 20, "maxHP": 20, "mDef": 0, "pDef": 1, "mAt": 0, "pAt": 1,
@@ -14,12 +15,14 @@
         "deck": [
 
             {"_id": "", "name": "Poción de salud inferior", "hp": 2, "type": "event", "class":"object", "cost": 1, "value": 1, "subType": "hp"},
+            
+            {"_id": "", "name": "Golpe devastador", "pAt": 2, "type": "event", "class":"strength", "cost": 1, "value": 1, "subType": "pAt"},
 
             {"_id": "", "name": "Guerrero nórdico", "hp": 10, "maxHP": 10, "mDef": 0, "pDef": 2, "mAt": 0, "pAt": 3, "type": "ally", "cost": 1, "value": 1, "isMagic": false, "exhausted": 0, "improves": []},
 
             {"_id": "", "name": "Espada corta nórdica", "pAt": 2, "type": "improve", "class": "weapon", "slot": 0, "subType": "pAt", "cost": 1, "value": 1},
             {"_id": "", "name": "Hacha corta nórdica", "pAt": 2, "type": "improve", "class": "weapon", "slot": 0, "subType": "pAt", "cost": 1, "value": 1},
-            {"_id": "", "name": "Gran hacha nórdica", "pAt": 2, "type": "improve", "class": "weapon", "slot": 1, "subType": "pAt", "cost": 1, "value": 1},
+            {"_id": "", "name": "Gran hacha nórdica", "pAt": 5, "type": "improve", "class": "weapon", "slot": 1, "subType": "pAt", "cost": 1, "value": 1},
             {"_id": "", "name": "Escudo nórdico", "pDef": 2, "type": "improve", "class": "armor", "slot": 0, "subType": "pDef", "cost": 1, "value": 1},
             {"_id": "", "name": "Yelmo nórdico", "pDef": 1, "type": "improve", "class": "armor", "slot": 2, "subType": "pDef", "cost": 1, "value": 1},
             {"_id": "", "name": "Peto nórdico", "pDef": 2, "type": "improve", "class": "armor", "slot": 3, "subType": "pDef", "cost": 1, "value": 1},
