@@ -10,6 +10,7 @@ import EventCard from '../components/EventCard';
 import EquipSlots from '../components/EquipSlots';
 import VillainCard from '../components/VillainCard';
 import VillainCards from '../components/VillainCards';
+import PlayerActBttns from '../components/PlayerActBttns';
 
 const TestPage = () => {
     const [ villain, setVillain ] = useState({
@@ -43,7 +44,8 @@ const TestPage = () => {
         hand: []
     });
 
-    const [ villainCard, setVillainCard ] = useState(null);
+    const [ villainTargets, setVillainTargets ] = useState([]);
+    const [ villainRound, setVillainRound ] = useState(0);
 
     const [ player, setPlayer ] = useState({
         _id: "",
@@ -90,7 +92,7 @@ const TestPage = () => {
             const deck = defaultChars[0].deck.map(card => {
                 return {...card, _id: generateID()};
             });
-            setPlayer({
+            const plr = {
                 ...defaultChars[0],
                 _id: generateID(),
                 hand: [],
@@ -106,12 +108,14 @@ const TestPage = () => {
                 initMaxHp: defaultChars[0].maxHP,
                 initHp: defaultChars[0].hp,
                 deck
-            });
+            }
+
+            setPlayer(plr);
 
             const villainDeck = villains[0].deck.map(card => {
                 return {...card, _id: generateID()};
             });
-            setVillain({
+            const vlln = {
                 ...villains[0],
                 _id: generateID(),
 
@@ -129,19 +133,14 @@ const TestPage = () => {
                 improves: [],
                 deck: villainDeck,
                 discards: []
-            })
+            }
+            setVillain(vlln);
+
+            setRotation([plr, vlln]);
         }, 250);
 
         return () => clearTimeout(timeout);
     }, []);
-
-    useEffect(() => {
-        if (player._id === "") return;
-        const timeout = setTimeout(() => {
-            setRotation([player, villain]);
-        }, 100);
-        return () => clearTimeout(timeout);
-    }, [player]);
 
     useEffect(() => {
         const timeout = setTimeout(() => setPlaying(rotation[0]), 100);
@@ -159,9 +158,21 @@ const TestPage = () => {
                 };
             });
             handleGetHand();
-            villainTurn();
+            handleGetVillainCard();
         };
     } , [playing]);
+
+    useEffect(() => {
+        if (villain.hand[0]) {
+            if ([0, 1, 2].includes(villain.hand[0].resource)) {
+                console.log(villain.hand[0])
+            };
+        };
+    }, [villain.hand]);
+
+    const villainNextMove = () => {
+
+    }
 
     const villainTurn = () => {
         console.log(villain);
@@ -206,7 +217,6 @@ const TestPage = () => {
             setPlaying(rotation[index+1]);
         };
         if (playing.type === "villain") {
-
             const players = rotation.filter(r => r.type !== "villain");
             players.push(players.shift());
             setRotation([...players, villain]);
@@ -377,10 +387,53 @@ const TestPage = () => {
     };
 
     // Ataque
-    const handleAttack = (a, d, aSetter, dSetter, isMagic = false) => {
+    const handleVillainAttack = (d, a, isDefending) => {
+        if (!d) return console.log('Debes seleccionar un defensor')
+        const isMagic = a.mAt > a.pAt
+
+        let attack = isMagic ? a.mAt : a.pAt;
+        let defense = isMagic ? d.mDef : d.pDef;
+        defense = isDefending ? defense : 0
+        attack += a.hand[0].value;
+
+        const total = attack - defense < 0 ? 0 : attack - defense;
+
+        const totalDamage = d.damage + total;
+        const newHPvalue = d.hp - total;
+
+        console.log(`${a.name} ataca ${isMagic ? "mágicamente" : "fisicamente"} a ${d.name} y le causa ${total} de daño físico`);
+
+        if (d.type === "ally") {
+
+            d.exhausted = 1;
+
+            d.hp = newHPvalue;
+            d.damage = totalDamage;
+
+            setPlayer(prev => {
+                const pr = prev;
+                const allies = [...pr.allies];
+                const newDiscards = [...pr.discards];
+                const allyIndex = allies.findIndex(ele => ele._id === a._id);
+                if (d.hp <= 0) {
+                    allies.splice(allyIndex, 1);
+                    newDiscards.push(d);
+                } else allies.splice(allyIndex, 1, d);
+                return {...pr, allies, discards: newDiscards};
+            });
+        } else {
+            setPlayer({...d, hp: newHPvalue, damage: totalDamage, exhausted: isDefending ? 1 : 0});
+        };
+
+        
+    };
+
+    const handleAttack = (a, isMagic = false) => {
+        if (!a) return console.log('No hay atacante seleccionado');
         if (a.exhausted) return console.log('No puedes atacar. Esta carta está agotada');
         if (a.stunned) {
-            aSetter(prev => {
+            // Añadir comprobación de si el stun es un aliado o player
+            setPlayer(prev => {
                 return {...prev, exhausted: 1, stunned: 0}
             });
 
@@ -389,29 +442,29 @@ const TestPage = () => {
 
         let aAttack = isMagic ? a.mAt : a.pAt;
 
-        let dDefense = isMagic ? d.mDef : d.pDef;
+        let dDefense = isMagic ? villain.mDef : villain.pDef;
 
         const total = aAttack - dDefense < 0 ? 0 : aAttack - dDefense;
 
-        const totalDamage = d.damage + total;
-        const newHPvalue = d.hp - total;
+        const totalDamage = villain.damage + total;
+        const newHPvalue = villain.hp - total;
 
-        console.log(`${a.name} ataca ${isMagic ? "mágicamente" : "fisicamente"} a ${d.name} y le causa ${total} de daño físico`);
+        console.log(`${a.name} ataca ${isMagic ? "mágicamente" : "fisicamente"} a ${villain.name} y le causa ${total} de daño físico`);
 
-        dSetter({...d, hp: newHPvalue, damage: totalDamage});
+        setVillain({...d, hp: newHPvalue, damage: totalDamage});
 
         if (a.type && a.type === "ally") {
             const ally = {...a};
 
             ally.exhausted = 1;
 
-            const counter = d.mAt > d.pAt ? d.mAt - a.mDef < 0 ? 0 :  d.mAt - a.mDef : d.pAt - a.pDef < 0 ? 0 : d.pAt - a.pDef;
+            const counter = villain.mAt > villain.pAt ? villain.mAt - a.mDef < 0 ? 0 :  villain.mAt - a.mDef : villain.pAt - a.pDef < 0 ? 0 : villain.pAt - a.pDef;
 
             ally.hp = ally.hp - counter;
 
-            console.log(`${d.name} contraataca ${ d.mAt > d.pAt ? "mágicamente" : "físicamente"} a tu aliado ${a.name} y le inflige ${counter} de daño. ${ally.hp <= 0 ? `${a.name} ha sido derrotado.` : ""}`);
+            console.log(`${villain.name} contraataca ${ villain.mAt > villain.pAt ? "mágicamente" : "físicamente"} a tu aliado ${a.name} y le inflige ${counter} de daño. ${ally.hp <= 0 ? `${a.name} ha sido derrotado.` : ""}`);
 
-            aSetter(prev => {
+            setPlayer(prev => {
                 const pr = prev;
                 const allies = [...pr.allies];
                 const newDiscards = [...pr.discards];
@@ -423,7 +476,7 @@ const TestPage = () => {
                 return {...pr, allies, discards: newDiscards};
             });
         } else {
-            aSetter(prev => { return { ...prev, exhausted: 1}});
+            setPlayer(prev => { return { ...prev, exhausted: 1}});
         };
 
         setCardToPlay(null);
@@ -480,8 +533,11 @@ const TestPage = () => {
         setAction(prev => prev + 1);
     };
 
+    // Cancelar acción
+    const handleOnCancelAction = () => setCardToPlay(null);
+
     // Función para comprobar si la carta ALLY está en juego
-    const checkPlayedAly = (card) => {
+    const checkPlayedAlly = (card) => {
         if (!card) return false;
         const allies = player.allies;
         const found = allies.find( ally => ally._id === card._id);
@@ -511,17 +567,21 @@ const TestPage = () => {
                         <CharCard char={player} />
                     </button>
 
-                    <button type='button' onClick={handleNextTurn} className='px-5 py-2 my-auto border border-indigo-500 rounded-xl hover:bg-indigo-500 hover:text-white'>Pasar turno</button>
+
+                    <PlayerActBttns handles={{handleNextTurn, handleAttack, checkPlayedAlly, handleOnCancelAction, handleVillainAttack}} cardToPlay={cardToPlay} setPlayer={setPlayer} villain={villain} setVillain={setVillain} playing={playing} player={player} />
+
+
+                    {/* <button type='button' onClick={handleNextTurn} className='px-5 py-2 my-auto border border-indigo-500 rounded-xl hover:bg-indigo-500 hover:text-white'>Pasar turno</button>
 
                     {   (
                             cardToPlay?.type === "character" || 
                             (
-                                cardToPlay?.type === "ally" && checkPlayedAly(cardToPlay)
+                                cardToPlay?.type === "ally" && checkPlayedAlly(cardToPlay)
                             )
                         ) && 
                         <Attacking onCancel={() => setCardToPlay(null)} handleAttack={handleAttack} cardToPlay={cardToPlay} setPlayer={setPlayer} villain={villain} setVillain={setVillain} />
                     }
-
+ */}
 
 
                 </div>
@@ -552,7 +612,7 @@ const TestPage = () => {
                         <>
                             <p>Selecciona una carta que jugar</p>
 
-                            {cardToPlay?.type !== "character" && cardToPlay && !checkPlayedAly(cardToPlay) && (
+                            {cardToPlay?.type !== "character" && cardToPlay && !checkPlayedAlly(cardToPlay) && (
                                 <div className='w-full flex flex-row gap-5 justify-center'>
                                     <button className='px-4 py-1 border border-indigo-500 rounded-xl hover:bg-indigo-600 hover:text-gray-100 font-bold'  onClick={handleAccept}>Aceptar</button>
 
