@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import NextIcon from "../img/nextIcon.png";
 
-const PlayerActBttns = ({handles, cardToPlay, setPlayer, villain, setVillain, playing, player}) => {
-    const  { handleNextTurn, checkPlayedAlly, handleAttack, handleVillainAttack } = handles;
+const PlayerActBttns = ({handles, cardToPlay, cardsToPay, villain, playing, player, action, target}) => {
+    const  { handleNextTurn, checkPlayedAlly, handleAttack, handleVillainAttack, handleAccept, handlePlayCard, handleCancelPay, handleOnCancelAction } = handles;
 
     const [ buttons, setButtons ] = useState([]);
 
@@ -20,7 +20,25 @@ const PlayerActBttns = ({handles, cardToPlay, setPlayer, villain, setVillain, pl
                 { label: "AlAt", angle: 180, onClick: (cardToPlay) => handleAttack(cardToPlay, cardToPlay.mAt > cardToPlay.pAt) }
             ])
         }
-    }, [cardToPlay]);
+        if (cardToPlay?.type !== "character" && cardToPlay && !checkPlayedAlly(cardToPlay) && action === 0) {
+            setButtons([
+                { label: "OK", angle: 220, onClick: handleAccept },
+                { label: "X", angle: 180, onClick: handleOnCancelAction }
+            ])
+        };
+        if (action === 1 && cardToPlay) {
+            setButtons([
+                { label: "Play", angle: 220, onClick: handlePlayCard },
+                { label: "X", angle: 180, onClick: handleOnCancelAction }
+            ])
+        }
+        if (action === 2 && target) {
+            setButtons([
+                { label: "Lanzar", angle: 220, onClick: handlePlayCard },
+                { label: "X", angle: 180, onClick: handleOnCancelAction }
+            ])
+        }
+    }, [cardToPlay, action, cardsToPay, target]);
 
     useEffect(() => {
         setButtons([]);

@@ -159,23 +159,24 @@ const TestPage = () => {
             });
             handleGetHand();
             handleGetVillainCard();
+            const players = rotation.filter(r => r.type !== "villain");
+            setVillainTargets(players);
         };
     } , [playing]);
 
     useEffect(() => {
-        if (villain.hand[0]) {
-            if ([0, 1, 2].includes(villain.hand[0].resource)) {
-                console.log(villain.hand[0])
+        if (playing?.type === "villain") {
+            if (villainTargets.length === 0) {
+                const players = rotation.filter(r => r.type !== "villain");
+                setVillainTargets(players);
+                setVillainRound(1);
             };
         };
-    }, [villain.hand]);
+        
+    }, [villainTargets]);
 
     const villainNextMove = () => {
 
-    }
-
-    const villainTurn = () => {
-        console.log(villain);
     };
 
     const handleGetVillainCard = () => {
@@ -363,10 +364,13 @@ const TestPage = () => {
     // Función para jugadr una carta, pagando su coste y descartando las cartas seleccionadas para el pago
     const handlePlayCard = () => {
         if (cardsToPay.length === 0) return console.log('No has seleccionado ninguga carta para pagar el coste.');
+
         let totalValue = 0;
         cardsToPay.forEach((card) => totalValue += card.value);
         if (cardToPlay.cost > totalValue) return console.log(`El coste de esta carta es más alto. Coste: ${cardToPlay.cost}. Llevas: ${totalValue}`);
+
         if (cardToPlay.type === "event" && ["pAt", "mAt"].includes(cardToPlay.subType) && !target && action === 1) return setAction(2);
+
         if (cardToPlay.type === "event" && ["pAt", "mAt"].includes(cardToPlay.subType) && !target) return console.log('Selecciona un objetivo primero');
 
         setPlayer(prev => {
@@ -425,17 +429,32 @@ const TestPage = () => {
             setPlayer({...d, hp: newHPvalue, damage: totalDamage, exhausted: isDefending ? 1 : 0});
         };
 
-        
+        setVillainTargets(prev => {
+            const p = prev;
+            const [ first, ...rest ] = p;
+            return rest;
+        });
     };
 
     const handleAttack = (a, isMagic = false) => {
         if (!a) return console.log('No hay atacante seleccionado');
         if (a.exhausted) return console.log('No puedes atacar. Esta carta está agotada');
         if (a.stunned) {
-            // Añadir comprobación de si el stun es un aliado o player
-            setPlayer(prev => {
-                return {...prev, exhausted: 1, stunned: 0}
-            });
+            if (a.type === "character") {
+                setPlayer(prev => {
+                    return {...prev, exhausted: 1, stunned: 0}
+                });
+            } else {
+                setPlayer(prev => {
+                    const p = prev;
+                    const allies = p.allies;
+                    const allyIndex = allies.findIndex(ele => ele._id === a._id);
+                    const ally = {...a, stunned: 0, exhausted: 1};
+                    allies.splice(allyIndex, 1, ally);
+                    return {...p, allies}
+                });
+            }
+            
 
             return console.log("Ya no estás stuneado");
         };
@@ -534,7 +553,12 @@ const TestPage = () => {
     };
 
     // Cancelar acción
-    const handleOnCancelAction = () => setCardToPlay(null);
+    const handleOnCancelAction = () => {
+        setCardToPlay(null);
+        setAction(0);
+        setCardsToPay([]);
+        setTarget(null)
+    };
 
     // Función para comprobar si la carta ALLY está en juego
     const checkPlayedAlly = (card) => {
@@ -567,22 +591,7 @@ const TestPage = () => {
                         <CharCard char={player} />
                     </button>
 
-
-                    <PlayerActBttns handles={{handleNextTurn, handleAttack, checkPlayedAlly, handleOnCancelAction, handleVillainAttack}} cardToPlay={cardToPlay} setPlayer={setPlayer} villain={villain} setVillain={setVillain} playing={playing} player={player} />
-
-
-                    {/* <button type='button' onClick={handleNextTurn} className='px-5 py-2 my-auto border border-indigo-500 rounded-xl hover:bg-indigo-500 hover:text-white'>Pasar turno</button>
-
-                    {   (
-                            cardToPlay?.type === "character" || 
-                            (
-                                cardToPlay?.type === "ally" && checkPlayedAlly(cardToPlay)
-                            )
-                        ) && 
-                        <Attacking onCancel={() => setCardToPlay(null)} handleAttack={handleAttack} cardToPlay={cardToPlay} setPlayer={setPlayer} villain={villain} setVillain={setVillain} />
-                    }
- */}
-
+                    <PlayerActBttns handles={{handleNextTurn, handleAttack, checkPlayedAlly, handleOnCancelAction, handleVillainAttack, handleAccept, handlePlayCard}} cardToPlay={cardToPlay} cardsToPay={cardsToPay} villain={villain} playing={playing} player={player} action={action} setAction={setAction} target={target} />
 
                 </div>
 
@@ -596,8 +605,6 @@ const TestPage = () => {
                     )}
                 </div>
 
-                
-
                 {/* <div className='w-full flex'>
                     {player.improves.map((card) => 
                         <div key={card._id} className='card-size border border-indigo-600 rounded-lg text-sm'>
@@ -605,65 +612,7 @@ const TestPage = () => {
                         </div>
                     )}
                 </div> */}
-
-
-                <div className='w-full flex flex-col items-center my-2'>
-                    {action === 0 && 
-                        <>
-                            <p>Selecciona una carta que jugar</p>
-
-                            {cardToPlay?.type !== "character" && cardToPlay && !checkPlayedAlly(cardToPlay) && (
-                                <div className='w-full flex flex-row gap-5 justify-center'>
-                                    <button className='px-4 py-1 border border-indigo-500 rounded-xl hover:bg-indigo-600 hover:text-gray-100 font-bold'  onClick={handleAccept}>Aceptar</button>
-
-                                    <button className='px-4 py-1 border border-indigo-500 rounded-xl hover:bg-indigo-600 hover:text-gray-100 font-bold' onClick={() => {
-                                        if (action === 0) {
-                                            setCardToPlay(null)
-                                        } else {
-                                            setAction(prev => prev - 1)
-                                        }
-                                    }}>Cancelar</button>
-                            
-                                </div>
-                            )}
-                        </>
-                    }
-                    {action === 1 && 
-                        <>
-                            <p>Selecciona las cartas para pagar</p>
-
-                            {cardToPlay && (
-                                <div className='w-full flex flex-row gap-5 justify-center'>
-                                    <button className='px-4 py-1 border border-indigo-500 rounded-xl hover:bg-indigo-600 hover:text-gray-100 font-bold' onClick={handlePlayCard}>Aceptar</button>
-
-                                    <button className='px-4 py-1 border border-indigo-500 rounded-xl hover:bg-indigo-600 hover:text-gray-100 font-bold' onClick={() => {
-                                        setCardToPlay([])
-                                        setAction(prev => prev - 1)
-                                    }}>Cancelar</button>
-                            
-                                </div>
-                            )}
-                        </>
-                    }
-                    {action === 2 && 
-                        <>
-                            <p>Selecciona tu objetivo</p>
-
-                            {target && (
-                                <div className='w-full flex flex-row gap-5 justify-center'>
-                                    <button className='px-4 py-1 border border-indigo-500 rounded-xl hover:bg-indigo-600 hover:text-gray-100 font-bold' onClick={handlePlayCard}>Aceptar</button>
-
-                                    <button className='px-4 py-1 border border-indigo-500 rounded-xl hover:bg-indigo-600 hover:text-gray-100 font-bold' onClick={() => {
-                                        setCardToPlay([]);
-                                        setAction(0);
-                                        setTarget(null);
-                                    }}>Cancelar</button>
-                            
-                                </div>
-                            )}
-                        </>
-                    }
-                </div>
+                
                 <div className='my-10 flex'>
 
                     <div className='w-full flex'>

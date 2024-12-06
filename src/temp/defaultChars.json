@@ -18,7 +18,8 @@
             
             {"_id": "", "name": "Golpe devastador", "pAt": 2, "type": "event", "class":"strength", "cost": 1, "value": 1, "subType": "pAt"},
 
-            {"_id": "", "name": "Guerrero nórdico", "hp": 10, "maxHP": 10, "mDef": 0, "pDef": 2, "mAt": 0, "pAt": 3, "type": "ally", "cost": 1, "value": 1, "isMagic": false, "exhausted": 0, "improves": []},
+            {"_id": "", "name": "Guerrero nórdico", "hp": 10, "maxHP": 10, "mDef": 0, "pDef": 2, "mAt": 0, "pAt": 3, "type": "ally", "cost": 1, "value": 1, "isMagic": false, "exhausted": 0, "improves": [], "stunned": 0,
+            "damage": 0},
 
             {"_id": "", "name": "Espada corta nórdica", "pAt": 2, "type": "improve", "class": "weapon", "slot": 0, "subType": "pAt", "cost": 1, "value": 1},
             {"_id": "", "name": "Hacha corta nórdica", "pAt": 2, "type": "improve", "class": "weapon", "slot": 0, "subType": "pAt", "cost": 1, "value": 1},
