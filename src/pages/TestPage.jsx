@@ -4,13 +4,13 @@ import defaultChars from "../temp/defaultChars.json";
 import villains from "../temp/villain.json";
 import ImproveCards from '../components/ImproveCards';
 import AllyCard from '../components/AllyCard';
-import Attacking from '../components/Attacking';
 import CharCard from '../components/CharCard';
 import EventCard from '../components/EventCard';
 import EquipSlots from '../components/EquipSlots';
 import VillainCard from '../components/VillainCard';
 import VillainCards from '../components/VillainCards';
 import PlayerActBttns from '../components/PlayerActBttns';
+import VillainOnPlayed from '../components/VillainOnPlayed';
 
 const TestPage = () => {
     const [ villain, setVillain ] = useState({
@@ -41,8 +41,13 @@ const TestPage = () => {
         improves: [],
         deck: [],
         discards: [],
-        hand: []
+        hand: [],
+        allies: [],
+        onPlayed: []
     });
+
+    const [ attackRound, setAttackRound ] = useState([]);
+    const [ eventRound, setEventRound ] = useState([]);
 
     const [ villainTargets, setVillainTargets ] = useState([]);
     const [ villainRound, setVillainRound ] = useState(0);
@@ -76,6 +81,7 @@ const TestPage = () => {
         hand: [],
         discards: []
     });
+
 
     const [ action, setAction ] = useState(0);
     const [ cardToPlay, setCardToPlay ] = useState(null);
@@ -132,7 +138,9 @@ const TestPage = () => {
                 hand: [],
                 improves: [],
                 deck: villainDeck,
-                discards: []
+                discards: [],
+                allies: [],
+                onPlayed: []
             }
             setVillain(vlln);
 
@@ -158,25 +166,97 @@ const TestPage = () => {
                 };
             });
             handleGetHand();
-            handleGetVillainCard();
             const players = rotation.filter(r => r.type !== "villain");
-            setVillainTargets(players);
+            setAttackRound(players);
+            setEventRound(players);
         };
     } , [playing]);
 
     useEffect(() => {
-        if (playing?.type === "villain") {
-            if (villainTargets.length === 0) {
-                const players = rotation.filter(r => r.type !== "villain");
-                setVillainTargets(players);
-                setVillainRound(1);
-            };
+        if (attackRound.length) {
+            handleGetVillainCard();
+            return;
         };
-        
-    }, [villainTargets]);
+        if (eventRound.length) {
+            handleGetVillainCard();
+            villainEvents();
+            return;
+        };
 
-    const villainNextMove = () => {
+        applyOnPlayedEvents();
+    }, [attackRound, eventRound]);
 
+    const applyOnPlayedEvents = () => {
+        const onActiveEvents = villain.onPlayed.filter(op => op.active);
+
+        setPlayer(prev => {
+            const p = prev;
+            const allies = [...p.allies];
+            let newHp = p.hp;
+            let damage = p.damage;
+            for (const data of onActiveEvents) {
+                if (data.subType === "damage") {
+                    newHp -= data.damage;
+                    damage += data.damage;
+                    console.log(`Sufres ${data.damage} daño por la carta activa ${data.name} del villano`);
+                    allies.forEach(ally => {
+                        console.log(ally)
+                        let newAllyHp = ally.maxHP;
+                        let newDamage = ally.damage + data.damage;
+                        console.log(newAllyHp)
+                        console.log(newDamage)
+                        newAllyHp -= newDamage;
+                        ally.damage = newDamage;
+                        ally.hp = newAllyHp;
+                        console.log(ally)
+                    });
+                };
+            };
+            return {...p, hp: newHp, damage, allies};
+        });
+
+
+        setVillain(prev => {
+            const v = prev;
+            const newonPlayed = [...v.onPlayed];
+            for (let i=0; i < newonPlayed.length; i++) {
+                if (!newonPlayed[i].active) {
+                    newonPlayed[i].active = true;
+                };
+            };
+            return {...prev, onPlayed: newonPlayed}
+        });
+
+        setRotation(prev => {
+            const p = prev;
+            const [ first, ...rest ] = p;
+            return [...rest.filter(c => c.type !== "villain"), first, villain];
+        });
+    };
+
+    const villainEvents = () => {
+        setVillain(prev => {
+            const p = prev;
+            const hand = p.hand[0];
+            if (hand && hand.type === "onPlayed") {
+                hand.active = false;
+                const newOnPlayed = [...p.onPlayed, hand];
+                
+                return {
+                    ...p,
+                    hand: [],
+                    onPlayed: newOnPlayed
+                }
+            };
+
+            return p;
+        });
+
+        setEventRound(prev => {
+            const p = prev;
+            const [ first, ...rest ] = p;
+            return rest;
+        });
     };
 
     const handleGetVillainCard = () => {
@@ -429,7 +509,7 @@ const TestPage = () => {
             setPlayer({...d, hp: newHPvalue, damage: totalDamage, exhausted: isDefending ? 1 : 0});
         };
 
-        setVillainTargets(prev => {
+        setAttackRound(prev => {
             const p = prev;
             const [ first, ...rest ] = p;
             return rest;
@@ -461,16 +541,21 @@ const TestPage = () => {
 
         let aAttack = isMagic ? a.mAt : a.pAt;
 
-        let dDefense = isMagic ? villain.mDef : villain.pDef;
+        
 
-        const total = aAttack - dDefense < 0 ? 0 : aAttack - dDefense;
+        setVillain(prev => {
+            const p = prev;
 
-        const totalDamage = villain.damage + total;
-        const newHPvalue = villain.hp - total;
+            let dDefense = isMagic ? p.mDef : p.pDef;
+            const total = aAttack - dDefense < 0 ? 0 : aAttack - dDefense;
 
-        console.log(`${a.name} ataca ${isMagic ? "mágicamente" : "fisicamente"} a ${villain.name} y le causa ${total} de daño físico`);
+            const totalDamage = p.damage + total;
+            const newHPvalue = p.hp - total;
 
-        setVillain({...d, hp: newHPvalue, damage: totalDamage});
+            console.log(`${a.name} ataca ${isMagic ? "mágicamente" : "fisicamente"} a ${p.name} y le causa ${total} de daño físico`);
+
+            return {...p, hp: newHPvalue, damage: totalDamage}
+        });
 
         if (a.type && a.type === "ally") {
             const ally = {...a};
@@ -572,17 +657,27 @@ const TestPage = () => {
     return (
         <div className='w-full flex flex-col justify-between'>
 
-            <div className='border border-indigo-500 rounded-lg p-5 flex justify-between'>
-                <button type='button' className={`card-size border border-indigo-600 ${target?.type === "villain" ? "border-2" : ""} rounded-lg text-sm transition-transform duration-500`} onClick={() => setTarget(prev => prev ? prev.type === "villain" ? null : villain : villain)}>
-                    <VillainCard villain={villain} />
-                </button>
+            <div className='border border-indigo-500 rounded-lg p-5'>
+                <div className='flex justify-between'>
+                    <button type='button' className={`card-size border border-indigo-600 ${target?.type === "villain" ? "border-2" : ""} rounded-lg text-sm transition-transform duration-500`} onClick={() => setTarget(prev => prev ? prev.type === "villain" ? null : villain : villain)}>
+                        <VillainCard villain={villain} />
+                    </button>
 
-                {villain.hand[0] && <div className='card-size border border-indigo-600 rounded-lg bg-white'>
-                    <VillainCards card={villain.hand[0]} />
-                </div>}
+                    {villain.hand[0] && <div className='card-size border border-indigo-600 rounded-lg bg-white'>
+                        <VillainCards card={villain.hand[0]} />
+                    </div>}
 
-                <div className={`card-size border ${villain.deck.length === 0 ? "bg-white border-gray-400" : "bg-blue-100 border-indigo-600"} border-indigo-600 rounded-lg bg-blue-100`} onClick={handleGetVillainCard}>{villain.deck.length}</div>
+                    <div className={`card-size border ${villain.deck.length === 0 ? "bg-white border-gray-400" : "bg-blue-100 border-indigo-600"} border-indigo-600 rounded-lg bg-blue-100`} onClick={handleGetVillainCard}>{villain.deck.length}</div>
+                </div>
                 
+                <div  className='flex justify-between'>
+                    {villain.onPlayed.map((card) => 
+                        <div key={card._id} className='card-size border border-indigo-600 rounded-lg text-sm transition-transform duration-200'>
+                            <VillainOnPlayed card={card} />
+                        </div>
+                    ) }
+
+                </div>
             </div>
 
             <div className='block border border-indigo-500 rounded-lg p-5'>
