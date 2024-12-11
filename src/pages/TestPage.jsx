@@ -12,6 +12,12 @@ import VillainCards from '../components/VillainCards';
 import PlayerActBttns from '../components/PlayerActBttns';
 import VillainOnPlayed from '../components/VillainOnPlayed';
 
+import { handleGetVillainCard, applyOnPlayedEvents, setActiveOnPlayedCards, villainEvents, nextTargetRound } from '../functions/VillainsFnc';
+
+import { nextRotationGroup } from "../functions/GameFnc";
+
+import { handleGetHand } from '../functions/PlayerFnc';
+
 const TestPage = () => {
     const [ villain, setVillain ] = useState({
         _id: generateID(),
@@ -49,9 +55,6 @@ const TestPage = () => {
     const [ attackRound, setAttackRound ] = useState([]);
     const [ eventRound, setEventRound ] = useState([]);
 
-    const [ villainTargets, setVillainTargets ] = useState([]);
-    const [ villainRound, setVillainRound ] = useState(0);
-
     const [ player, setPlayer ] = useState({
         _id: "",
         name: "Jugador",
@@ -81,7 +84,6 @@ const TestPage = () => {
         hand: [],
         discards: []
     });
-
 
     const [ action, setAction ] = useState(0);
     const [ cardToPlay, setCardToPlay ] = useState(null);
@@ -158,14 +160,7 @@ const TestPage = () => {
     useEffect(() => {
         if (!playing) return;
         if (playing.type === "villain") {
-            setPlayer(prev => {
-                return {
-                    ...prev,
-                    exhausted: 0,
-                    allies: prev.allies.map(a => { return {...a, exhausted: 0}})
-                };
-            });
-            handleGetHand();
+            setPlayer(handleGetHand);
             const players = rotation.filter(r => r.type !== "villain");
             setAttackRound(players);
             setEventRound(players);
@@ -173,157 +168,40 @@ const TestPage = () => {
     } , [playing]);
 
     useEffect(() => {
+        if (playing?.type !== "villain") return;
         if (attackRound.length) {
-            handleGetVillainCard();
+            setVillain(handleGetVillainCard)
             return;
         };
         if (eventRound.length) {
-            handleGetVillainCard();
-            villainEvents();
+            setVillain(handleGetVillainCard);
+
+            setVillain(villainEvents);
+            setEventRound(nextTargetRound);
             return;
         };
-
-        applyOnPlayedEvents();
+        const timeout = setTimeout(() => {
+            setPlayer(prev => applyOnPlayedEvents(prev, villain.onPlayed));
+            setTimeout(() => {
+                setVillain(setActiveOnPlayedCards);
+                handleNextTurn();
+            }, 100);
+        }, 100);
+        return () => clearTimeout(timeout);
     }, [attackRound, eventRound]);
-
-    const applyOnPlayedEvents = () => {
-        const onActiveEvents = villain.onPlayed.filter(op => op.active);
-
-        setPlayer(prev => {
-            const p = prev;
-            const allies = [...p.allies];
-            let newHp = p.hp;
-            let damage = p.damage;
-            for (const data of onActiveEvents) {
-                if (data.subType === "damage") {
-                    newHp -= data.damage;
-                    damage += data.damage;
-                    console.log(`Sufres ${data.damage} daño por la carta activa ${data.name} del villano`);
-                    allies.forEach(ally => {
-                        console.log(ally)
-                        let newAllyHp = ally.maxHP;
-                        let newDamage = ally.damage + data.damage;
-                        console.log(newAllyHp)
-                        console.log(newDamage)
-                        newAllyHp -= newDamage;
-                        ally.damage = newDamage;
-                        ally.hp = newAllyHp;
-                        console.log(ally)
-                    });
-                };
-            };
-            return {...p, hp: newHp, damage, allies};
-        });
-
-
-        setVillain(prev => {
-            const v = prev;
-            const newonPlayed = [...v.onPlayed];
-            for (let i=0; i < newonPlayed.length; i++) {
-                if (!newonPlayed[i].active) {
-                    newonPlayed[i].active = true;
-                };
-            };
-            return {...prev, onPlayed: newonPlayed}
-        });
-
-        setRotation(prev => {
-            const p = prev;
-            const [ first, ...rest ] = p;
-            return [...rest.filter(c => c.type !== "villain"), first, villain];
-        });
-    };
-
-    const villainEvents = () => {
-        setVillain(prev => {
-            const p = prev;
-            const hand = p.hand[0];
-            if (hand && hand.type === "onPlayed") {
-                hand.active = false;
-                const newOnPlayed = [...p.onPlayed, hand];
-                
-                return {
-                    ...p,
-                    hand: [],
-                    onPlayed: newOnPlayed
-                }
-            };
-
-            return p;
-        });
-
-        setEventRound(prev => {
-            const p = prev;
-            const [ first, ...rest ] = p;
-            return rest;
-        });
-    };
-
-    const handleGetVillainCard = () => {
-        setVillain(prev => {
-            const v = prev;
-            if (v.deck[0]) {
-                const [ first, ...rest ] = v.deck;
-                const newHand = [first];
-                const newDeck = rest;
-                const newDiscards = [...v.discards, first];
-                return {
-                    ...v,
-                    deck: newDeck,
-                    discards: newDiscards,
-                    hand: newHand
-                };
-            }
-            // Barajar pila de descartes
-            let newDeck = [...v.discards];
-            const [ first, ...rest ] = newDeck;
-            const newHand = [first];
-            newDeck = rest;
-            const newDiscards = [...v.discards, first];
-            const newLvlEnrage = v.enrage + 1;
-            return {
-                ...v,
-                deck: newDeck,
-                discards: newDiscards,
-                hand: newHand,
-                enrage: newLvlEnrage
-            };
-        });
-    };
 
     // Pasar turnos
     const handleNextTurn = () => {
-        if (playing.type === "character") {
+        if (playing?.type === "character") {
             const index = rotation.findIndex(r => r._id === playing._id);
             setPlaying(rotation[index+1]);
         };
-        if (playing.type === "villain") {
+        if (playing?.type === "villain") {
             const players = rotation.filter(r => r.type !== "villain");
             players.push(players.shift());
             setRotation([...players, villain]);
             setTurns(prev => prev + 1);
         };
-    };
-
-    // Reestablece la mano. Si no le quedan cartas en el deck, reestablece el desck con las descartadas
-    const handleGetHand = () => {
-        if (player.maxHand === player.hand.length) return console.log('Ya tienes la mano completa');
- 
-        setPlayer(prev => {
-            const a = prev;
-            const maxToGet = a.maxHand - a.hand.length;
-            let actualDiscards = [...a.discards];
-            let actualDeck =  [...a.deck];
-            if (actualDeck.length < maxToGet) {
-                actualDeck = [...a.deck, ...actualDiscards];
-                actualDiscards = [];
-                console.log("Se ha reestablecido tu Deck con las descartadas")
-            };
-
-            const newHand = [...a.hand, ...actualDeck.splice(0, maxToGet)];
-  
-            return {...a, hand: newHand, deck: actualDeck, discards: actualDiscards};
-        });
     };
 
     // Selecciona la carta para jugar y las cartas que la pagarán
@@ -488,8 +366,6 @@ const TestPage = () => {
         console.log(`${a.name} ataca ${isMagic ? "mágicamente" : "fisicamente"} a ${d.name} y le causa ${total} de daño físico`);
 
         if (d.type === "ally") {
-
-            d.exhausted = 1;
 
             d.hp = newHPvalue;
             d.damage = totalDamage;
@@ -720,7 +596,7 @@ const TestPage = () => {
                         ))}
                     </div>
 
-                    <input type='button' className={`card-size border ${player.deck.length === 0 ? "bg-white border-gray-400" : "bg-blue-100 border-indigo-600"} border-indigo-600 rounded-lg bg-blue-100 hover:cursor-pointer`} onClick={handleGetHand} />
+                    <input type='button' className={`card-size border ${player.deck.length === 0 ? "bg-white border-gray-400" : "bg-blue-100 border-indigo-600"} border-indigo-600 rounded-lg bg-blue-100 hover:cursor-pointer`} onClick={() => setPlayer(handleGetHand)} />
                 </div>
             </div>
 
