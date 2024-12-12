@@ -181,14 +181,12 @@ const TestPage = () => {
             setEventRound(nextTargetRound);
             return;
         };
-        const timeout = setTimeout(() => {
-            setPlayer(prev => applyOnPlayedEvents(prev, villain.onPlayed));
-            setTimeout(() => {
-                setVillain(setActiveOnPlayedCards);
-                handleNextTurn();
-            }, 100);
+        if (attackRound.length || eventRound.length) return;
+        setPlayer(prev => applyOnPlayedEvents(prev, villain.onPlayed));
+        setTimeout(() => {
+            setVillain(setActiveOnPlayedCards);
+            handleNextTurn();
         }, 100);
-        return () => clearTimeout(timeout);
     }, [attackRound, eventRound]);
 
     // Pasar turnos
@@ -279,6 +277,8 @@ const TestPage = () => {
         };
 
         
+        setCardToPlay(null);
+        // setTarget(null);
         setAttackRound(nextToAttackRound);
     };
 

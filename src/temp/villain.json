@@ -8,6 +8,7 @@
             {"_id": "", "resource": 1, "value": 1, "name": "Todo o nada", "description": "El líder bandido provoca un incendio derramando óleo por el lugar, prendiendolo.", "type": "onPlayed", "subType": "damage", "damage": 2},
             {"_id": "", "name": "Bandido", "hp": 10, "maxHP": 10, "mDef": 0, "pDef": 2, "mAt": 0, "pAt": 3, "type": "ally", "resource": 1, "cost": 1, "value": 1, "isMagic": false, "exhausted": 0, "improves": [], "stunned": 0,
             "damage": 0},
+            {"_id": "", "resource": 1, "value": 1, "name": "Todo o nada", "description": "El líder bandido provoca un incendio derramando óleo por el lugar, prendiendolo.", "type": "onPlayed", "subType": "damage", "damage": 2},
             {"_id": "", "resource": 3, "value": 1, "name": "Evento de villano 3"},
             {"_id": "", "resource": 4, "value": 1, "name": "Evento de villano 4"},
             {"_id": "", "resource": 0, "value": 1, "name": "Evento de villano 5"}

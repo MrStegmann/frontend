@@ -1,5 +1,22 @@
+let isApplyDamageWithEvents = false;
+
+function isApplyDamage () {
+    if (!isApplyDamageWithEvents) {
+        isApplyDamageWithEvents = true;
+
+        setTimeout(() => { isApplyDamageWithEvents = false }, 500);
+        
+        return false;
+    };
+    
+    return true
+};
+
+
+
 const applyOnPlayedEvents = (prev, onPlayed) => {
-     
+    if ( isApplyDamage() ) return prev;
+
     const onActiveEvents = onPlayed.filter(op => op.active);
 
     const p = prev;
@@ -12,18 +29,17 @@ const applyOnPlayedEvents = (prev, onPlayed) => {
             damage += data.damage;
             console.log(`Sufres ${data.damage} daño por la carta activa ${data.name} del villano`);
             allies.forEach(ally => {
-                console.log(ally)
                 let newAllyHp = ally.maxHP;
                 let newDamage = ally.damage + data.damage;
-                console.log(newAllyHp)
-                console.log(newDamage)
+
                 newAllyHp -= newDamage;
                 ally.damage = newDamage;
                 ally.hp = newAllyHp;
-                console.log(ally)
+                console.log(`Tu aliado ${ally.name} sufre ${data.damage} daño por la carta activa ${data.name} del villano`);
             });
         };
     };
+
     return {...p, hp: newHp, damage, allies};
 };
 
@@ -143,7 +159,7 @@ const villainGetDamage = (prev, aAttack, isMagic) => {
     const totalDamage = p.damage + total;
     const newHPvalue = p.hp - total;
 
-    console.log(`${a.name} ataca ${isMagic ? "mágicamente" : "fisicamente"} a ${p.name} y le causa ${total} de daño físico`);
+    console.log(`Atacas ${isMagic ? "mágicamente" : "fisicamente"} a ${p.name} y le causa ${total} de daño físico`);
 
     return {...p, hp: newHPvalue, damage: totalDamage}
 };
@@ -158,7 +174,7 @@ const villainAttackAlly = (prev, d) => {
     const pr = prev;
     const allies = [...pr.allies];
     const newDiscards = [...pr.discards];
-    const allyIndex = allies.findIndex(ele => ele._id === a._id);
+    const allyIndex = allies.findIndex(ele => ele._id === d._id);
     if (d.hp <= 0) {
         allies.splice(allyIndex, 1);
         newDiscards.push(d);
