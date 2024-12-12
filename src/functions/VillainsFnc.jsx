@@ -134,11 +134,46 @@ const handleVillainAttack = (d, a, isDefending, setPlayer, setAttackRound) => {
     });
 };
 
+const villainGetDamage = (prev, aAttack, isMagic) => {
+    const p = prev;
+
+    let dDefense = isMagic ? p.mDef : p.pDef;
+    const total = aAttack - dDefense < 0 ? 0 : aAttack - dDefense;
+
+    const totalDamage = p.damage + total;
+    const newHPvalue = p.hp - total;
+
+    console.log(`${a.name} ataca ${isMagic ? "mágicamente" : "fisicamente"} a ${p.name} y le causa ${total} de daño físico`);
+
+    return {...p, hp: newHPvalue, damage: totalDamage}
+};
+
+const nextToAttackRound = prev => {
+    const p = prev;
+    const [ first, ...rest ] = p;
+    return rest;
+};
+
+const villainAttackAlly = (prev, d) => {
+    const pr = prev;
+    const allies = [...pr.allies];
+    const newDiscards = [...pr.discards];
+    const allyIndex = allies.findIndex(ele => ele._id === a._id);
+    if (d.hp <= 0) {
+        allies.splice(allyIndex, 1);
+        newDiscards.push(d);
+    } else allies.splice(allyIndex, 1, d);
+    return {...pr, allies, discards: newDiscards};
+}
+
 export {
     applyOnPlayedEvents,
     setActiveOnPlayedCards,
     villainEvents,
     nextTargetRound,
     handleGetVillainCard,
-    handleVillainAttack
+    handleVillainAttack,
+    villainGetDamage,
+    nextToAttackRound,
+    villainAttackAlly
 }

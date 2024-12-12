@@ -12,11 +12,11 @@ import VillainCards from '../components/VillainCards';
 import PlayerActBttns from '../components/PlayerActBttns';
 import VillainOnPlayed from '../components/VillainOnPlayed';
 
-import { handleGetVillainCard, applyOnPlayedEvents, setActiveOnPlayedCards, villainEvents, nextTargetRound } from '../functions/VillainsFnc';
+import { handleGetVillainCard, applyOnPlayedEvents, setActiveOnPlayedCards, villainEvents, nextTargetRound, villainGetDamage, nextToAttackRound, villainAttackAlly } from '../functions/VillainsFnc';
 
 import { nextRotationGroup } from "../functions/GameFnc";
 
-import { handleGetHand } from '../functions/PlayerFnc';
+import { handleGetHand, setPlayedCard, setPlayerExhausted, attackWithAlly, setPlayerExhaustedNotStunned, setAlliExhaustedNotStunned } from '../functions/PlayerFnc';
 
 const TestPage = () => {
     const [ villain, setVillain ] = useState({
@@ -134,6 +134,7 @@ const TestPage = () => {
                 initMaxHp: villains[0].maxHP,
                 initHp: villains[0].hp,
 
+                damage: 0,
                 phase: 0,
                 stunned: 0,
 
@@ -223,102 +224,6 @@ const TestPage = () => {
         };
     };
 
-    // Función para pagar cartas de Mejora
-    const improveCards = (a, newHand, newDiscard) => {
-        const newImprove = [...a.improves, cardToPlay];
-
-        let totalMaxHP = a.initMaxHp;
-        let totalHP = a.initHp - a.damage;
-
-        let totalPhAt = a.initPhAt;
-        let totalMaAt = a.initMaAt;
-
-        let totalPhADef = a.initPhDef;
-        let totalMaDef = a.initMaDef;
-
-        newImprove.forEach(iCard => {
-            const { pAt, mAt, pDef, mDef, maxHP } = iCard;
-            if (pAt) totalPhAt += pAt;
-            if (mAt) totalMaAt += mAt;
-            if (pDef) totalPhADef += pDef;
-            if (mDef) totalMaDef += mDef;
-            if (maxHP) {
-                totalMaxHP += maxHP;
-                totalHP += maxHP;
-            };
-        });
-
-        totalHP = totalHP > totalMaxHP ? totalMaxHP : totalHP;
-
-        return { 
-            ...a,
-            maxHP: totalMaxHP,
-            hp: totalHP,
-
-            pAt: totalPhAt,
-            mAt: totalMaAt,
-
-            pDef: totalPhADef,
-            mDef: totalMaDef,
-
-            improves: newImprove,  
-            hand: newHand,
-            discards: newDiscard
-        };
-    };
-
-    // Función para pagar cartas de Aliados
-    const allyCards = (a, newHand, newDiscard) => {
-        const newAllies = [...a.allies, cardToPlay];
-
-        return { 
-            ...a,
-            hand: newHand,
-            discards: newDiscard,
-            allies: newAllies
-        };
-    };
-
-    // Función para pagar cartas de Evento
-    const eventCards = (a, newHand, newDiscard) => {
-        newDiscard.push(cardToPlay);
-
-        const { hp, pAt } = cardToPlay;
-
-        if (pAt) {
-            let aAttack = a.pAt + pAt;
-            let dDefense = target.pDef;
-    
-            const total = aAttack - dDefense < 0 ? 0 : aAttack - dDefense;
-    
-            const totalDamage = target.damage + total;
-            const newHPvalue = target.hp - total;
-
-            console.log(`${a.name} ataca fisicamente a ${target.name} y le causa ${total} de daño físico`);
-
-            if (target.type === "villain") {
-                setVillain(prev => {return {...prev, hp: newHPvalue, damage: totalDamage}});
-            }
-
-            return { 
-                ...a,
-                hand: newHand,
-                discards: newDiscard
-            };
-        };
-        
-        if (hp) {
-            const newHP = a.hp + hp;
-        
-            return { 
-                ...a,
-                hp: newHP,
-                hand: newHand,
-                discards: newDiscard
-            };
-        }
-    };
-
     // Función para jugadr una carta, pagando su coste y descartando las cartas seleccionadas para el pago
     const handlePlayCard = () => {
         if (cardsToPay.length === 0) return console.log('No has seleccionado ninguga carta para pagar el coste.');
@@ -331,16 +236,15 @@ const TestPage = () => {
 
         if (cardToPlay.type === "event" && ["pAt", "mAt"].includes(cardToPlay.subType) && !target) return console.log('Selecciona un objetivo primero');
 
-        setPlayer(prev => {
-            const a = prev;
-            const actualHand = [...a.hand]
-            const newHand = actualHand.filter(c => c._id !== cardToPlay._id).filter(c => !cardsToPay.find(ctp => ctp._id === c._id));
-            const newDiscard = [...a.discards, ...cardsToPay];
-            if (cardToPlay.type === "improve") return improveCards(a, newHand, newDiscard);
-            if (cardToPlay.type === "ally") return allyCards(a, newHand, newDiscard);
-            if (cardToPlay.type === "event") return eventCards(a, newHand, newDiscard);
 
-        });
+
+        setPlayer(prev => setPlayedCard(prev, target, cardToPlay, cardsToPay, (villainData) => {
+            if (villainData) {
+                setVillain(prev => {
+                    return {...prev, ...villainData}
+                });
+            };
+        }));
 
         setCardToPlay(null);
         setCardsToPay([]);
@@ -366,30 +270,16 @@ const TestPage = () => {
         console.log(`${a.name} ataca ${isMagic ? "mágicamente" : "fisicamente"} a ${d.name} y le causa ${total} de daño físico`);
 
         if (d.type === "ally") {
-
             d.hp = newHPvalue;
             d.damage = totalDamage;
+            setPlayer(prev => villainAttackAlly(prev, d));
 
-            setPlayer(prev => {
-                const pr = prev;
-                const allies = [...pr.allies];
-                const newDiscards = [...pr.discards];
-                const allyIndex = allies.findIndex(ele => ele._id === a._id);
-                if (d.hp <= 0) {
-                    allies.splice(allyIndex, 1);
-                    newDiscards.push(d);
-                } else allies.splice(allyIndex, 1, d);
-                return {...pr, allies, discards: newDiscards};
-            });
         } else {
             setPlayer({...d, hp: newHPvalue, damage: totalDamage, exhausted: isDefending ? 1 : 0});
         };
 
-        setAttackRound(prev => {
-            const p = prev;
-            const [ first, ...rest ] = p;
-            return rest;
-        });
+        
+        setAttackRound(nextToAttackRound);
     };
 
     const handleAttack = (a, isMagic = false) => {
@@ -397,41 +287,18 @@ const TestPage = () => {
         if (a.exhausted) return console.log('No puedes atacar. Esta carta está agotada');
         if (a.stunned) {
             if (a.type === "character") {
-                setPlayer(prev => {
-                    return {...prev, exhausted: 1, stunned: 0}
-                });
+                // Quita el stun tras intentar atacar y agota el personaje
+                setPlayer(setPlayerExhaustedNotStunned);
+                return console.log("Ya no estás stuneado");
             } else {
-                setPlayer(prev => {
-                    const p = prev;
-                    const allies = p.allies;
-                    const allyIndex = allies.findIndex(ele => ele._id === a._id);
-                    const ally = {...a, stunned: 0, exhausted: 1};
-                    allies.splice(allyIndex, 1, ally);
-                    return {...p, allies}
-                });
-            }
-            
-
-            return console.log("Ya no estás stuneado");
+                setPlayer(prev => setAlliExhaustedNotStunned(prev, a));
+                return console.log(`Tu aliado ${a.name} ya no estás stuneado`);
+            };
         };
 
         let aAttack = isMagic ? a.mAt : a.pAt;
 
-        
-
-        setVillain(prev => {
-            const p = prev;
-
-            let dDefense = isMagic ? p.mDef : p.pDef;
-            const total = aAttack - dDefense < 0 ? 0 : aAttack - dDefense;
-
-            const totalDamage = p.damage + total;
-            const newHPvalue = p.hp - total;
-
-            console.log(`${a.name} ataca ${isMagic ? "mágicamente" : "fisicamente"} a ${p.name} y le causa ${total} de daño físico`);
-
-            return {...p, hp: newHPvalue, damage: totalDamage}
-        });
+        setVillain(prev => villainGetDamage(prev, aAttack, isMagic));
 
         if (a.type && a.type === "ally") {
             const ally = {...a};
@@ -444,19 +311,9 @@ const TestPage = () => {
 
             console.log(`${villain.name} contraataca ${ villain.mAt > villain.pAt ? "mágicamente" : "físicamente"} a tu aliado ${a.name} y le inflige ${counter} de daño. ${ally.hp <= 0 ? `${a.name} ha sido derrotado.` : ""}`);
 
-            setPlayer(prev => {
-                const pr = prev;
-                const allies = [...pr.allies];
-                const newDiscards = [...pr.discards];
-                const allyIndex = allies.findIndex(ele => ele._id === a._id);
-                if (ally.hp <= 0) {
-                    allies.splice(allyIndex, 1);
-                    newDiscards.push(ally);
-                } else allies.splice(allyIndex, 1, ally);
-                return {...pr, allies, discards: newDiscards};
-            });
+            setPlayer(prev => attackWithAlly(prev, ally));
         } else {
-            setPlayer(prev => { return { ...prev, exhausted: 1}});
+            setPlayer(setPlayerExhausted);
         };
 
         setCardToPlay(null);
